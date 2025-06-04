@@ -2,10 +2,10 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Audio Player Autoplay</title>
+  <title>Frequenze</title>
   <style>
     body {
-      background: black;
+      background-color: black;
       color: white;
       font-family: sans-serif;
       display: flex;
@@ -15,20 +15,62 @@
       height: 100vh;
       margin: 0;
     }
-    audio {
-      width: 300px;
-    }
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
+      font-size: 3rem;
+      margin-bottom: 3rem;
+    }
+    #toggleBtn {
+      background: white;
+      color: black;
+      font-size: 2rem;
+      width: 100px;
+      height: 100px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, transform 0.2s;
+    }
+    #toggleBtn:hover {
+      background: #ddd;
+      transform: scale(1.05);
+    }
+    #toggleBtn:disabled {
+      background: #666;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <h1>Audio Player con Autoplay</h1>
-  <audio controls autoplay>
+  <h1>Frequenze in loop</h1>
+  <button id="toggleBtn" disabled>⏳</button>
+  <audio id="myAudio" loop>
     <source src="assets/wii-sports-resort.mp3" type="audio/mpeg" />
-    Il tuo browser non supporta l'elemento audio.
+    Il tuo browser non supporta l'audio.
   </audio>
+
+  <script>
+    const audio = document.getElementById('myAudio');
+    const button = document.getElementById('toggleBtn');
+
+    audio.addEventListener('loadedmetadata', () => {
+      button.disabled = false;
+      button.textContent = '▶️';
+    });
+
+    button.addEventListener('click', () => {
+      if (audio.paused) {
+        const maxStart = Math.max(0, audio.duration - 1);
+        audio.currentTime = Math.random() * maxStart;
+        audio.play();
+        button.textContent = '⏸️';
+      } else {
+        audio.pause();
+        button.textContent = '▶️';
+      }
+    });
+  </script>
 </body>
 </html>
