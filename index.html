@@ -28,12 +28,8 @@
 </head>
 <body>
   <h1>Frequenze in loop</h1>
-  <audio id="myAudio" controls loop autoplay>
-    <source src="/assets/wii-sports-resort.mp3" type="audio/mpeg" />
-    Il tuo browser non supporta l'audio HTML5.
-  </audio>
-
-  /*
+    <iframe src="assets/wii-sports-resort.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+  
   <script>
     const audio = document.getElementById('myAudio');
 
@@ -45,6 +41,6 @@
       audio.play();
     });
   </script>
-  */
+  
 </body>
 </html>
