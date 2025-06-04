@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Audio Play Button</title>
+  <title>Player Audio Semplice</title>
   <style>
     body {
       margin: 0;
@@ -19,43 +19,16 @@
       font-size: 3rem;
       margin-bottom: 40px;
     }
-    button {
-      background: none;
-      border: 2px solid white;
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 40px;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: white;
-      color: black;
-    }
     audio {
-      display: none; /* Nascondiamo il player */
+      width: 300px;
     }
   </style>
 </head>
 <body>
-  <h1>Audio Play Button</h1>
-
-  <button id="playBtn" aria-label="Play audio">▶</button>
-  <audio id="myAudio" src="assets/wii-sports-resort.mp3" loop></audio>
-
-  <script>
-    const playBtn = document.getElementById('playBtn');
-    const audio = document.getElementById('myAudio');
-
-    playBtn.addEventListener('click', () => {
-      audio.play();
-      playBtn.style.display = 'none'; // Nasconde il bottone dopo il play
-    });
-  </script>
+  <h1>Audio Player</h1>
+  <audio controls>
+    <source src="assets/wii-sports-resort.mp3" type="audio/mpeg" />
+    Il tuo browser non supporta l'elemento audio.
+  </audio>
 </body>
 </html>
