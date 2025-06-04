@@ -2,9 +2,10 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Frequenze</title>
+  <title>Audio Play Button</title>
   <style>
     body {
+      margin: 0;
       background-color: black;
       color: white;
       display: flex;
@@ -12,35 +13,49 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
       font-family: sans-serif;
     }
-    audio {
-      width: 300px;
-      margin-top: 20px;
-    }
     h1 {
-      font-size: 1.2rem;
-      font-weight: normal;
-      opacity: 0.7;
+      font-size: 3rem;
+      margin-bottom: 40px;
+    }
+    button {
+      background: none;
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 40px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: white;
+      color: black;
+    }
+    audio {
+      display: none; /* Nascondiamo il player */
     }
   </style>
 </head>
 <body>
-  <h1>Frequenze in loop</h1>
-    <iframe src="assets/wii-sports-resort.mp3" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
-  
+  <h1>Audio Play Button</h1>
+
+  <button id="playBtn" aria-label="Play audio">▶</button>
+  <audio id="myAudio" src="assets/wii-sports-resort.mp3" loop></audio>
+
   <script>
+    const playBtn = document.getElementById('playBtn');
     const audio = document.getElementById('myAudio');
 
-    audio.addEventListener('loadedmetadata', () => {
-      // Imposta currentTime a un punto random tra 0 e durata - 1 secondo
-      const maxStart = Math.max(0, audio.duration - 1);
-      audio.currentTime = Math.random() * maxStart;
-      // Riproduci l'audio (utile in alcuni browser che richiedono esplicitamente il play)
+    playBtn.addEventListener('click', () => {
       audio.play();
+      playBtn.style.display = 'none'; // Nasconde il bottone dopo il play
     });
   </script>
-  
 </body>
 </html>
