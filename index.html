@@ -4,59 +4,94 @@
   <meta charset="UTF-8" />
   <title>Frequenze</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
   <style>
     * {
-      -webkit-tap-highlight-color: transparent; /* Rimuove evidenziazione blu su mobile */
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
     }
 
     body {
       background-color: black;
       color: white;
-      font-family: sans-serif;
+      font-family: 'Material Symbols Outlined', sans-serif;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      gap: 2rem;
       touch-action: manipulation;
     }
 
-    #toggleBtn {
-      background: none;
+    h1 {
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
       color: white;
-      font-size: 3rem;
-      width: 120px;
-      height: 120px;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s;
-      outline: none;
+      font-family: 'Material Symbols Outlined', sans-serif;
+      margin: 0;
     }
 
-    #toggleBtn:hover {
+    button {
+      all: unset;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
       transform: scale(1.05);
     }
 
-    #toggleBtn:disabled {
-      color: gray;
-      cursor: not-allowed;
+    button svg {
+      width: 60px;
+      height: 60px;
+      fill: white;
+    }
+
+    button:disabled svg {
+      fill: gray;
     }
 
     @media (max-width: 768px) {
-      #toggleBtn {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      button {
         width: 160px;
         height: 160px;
-        font-size: 4rem;
+      }
+
+      button svg {
+        width: 80px;
+        height: 80px;
       }
     }
   </style>
 </head>
 <body>
-  <button id="toggleBtn" disabled>⏳</button>
+
+  <h1>TRACCE</h1>
+
+  <button id="toggleBtn" disabled>
+    <!-- Icona clessidra iniziale -->
+    <svg id="icon" viewBox="0 0 24 24">
+      <path d="M6 2v2h1v3c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V4h1V2H6zm1 5V4h10v3c0 .55-.45 1-1 1H8c-.55 0-1-.45-1-1zm10 10v3H7v-3c0-.55.45-1 1-1h8c.55 0 1 .45 1 1zm1-2H6v2h12v-2z"/>
+    </svg>
+  </button>
+
   <audio id="myAudio" loop>
     <source src="assets/tracce-audio.mp3" type="audio/mpeg" />
     Il tuo browser non supporta l'audio.
@@ -65,10 +100,14 @@
   <script>
     const audio = document.getElementById('myAudio');
     const button = document.getElementById('toggleBtn');
+    const icon = document.getElementById('icon');
+
+    const playIcon = `<path d="M8 5v14l11-7z"/>`;
+    const pauseIcon = `<path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/>`;
 
     audio.addEventListener('loadedmetadata', () => {
       button.disabled = false;
-      button.textContent = '▶';
+      icon.innerHTML = playIcon;
     });
 
     button.addEventListener('click', () => {
@@ -76,10 +115,10 @@
         const maxStart = Math.max(0, audio.duration - 1);
         audio.currentTime = Math.random() * maxStart;
         audio.play();
-        button.textContent = '⏸';
+        icon.innerHTML = pauseIcon;
       } else {
         audio.pause();
-        button.textContent = '▶';
+        icon.innerHTML = playIcon;
       }
     });
   </script>
