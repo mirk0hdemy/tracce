@@ -3,48 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <title>Frequenze</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    * {
+      -webkit-tap-highlight-color: transparent; /* Rimuove evidenziazione blu su mobile */
+    }
+
     body {
       background-color: black;
       color: white;
       font-family: sans-serif;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      touch-action: manipulation;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 3rem;
-    }
+
     #toggleBtn {
-      background: white;
-      color: black;
-      font-size: 2rem;
-      width: 100px;
-      height: 100px;
+      background: none;
+      color: white;
+      font-size: 3rem;
+      width: 120px;
+      height: 120px;
       border: none;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.3s, transform 0.2s;
+      transition: transform 0.2s;
+      outline: none;
     }
+
     #toggleBtn:hover {
-      background: #ddd;
       transform: scale(1.05);
     }
+
     #toggleBtn:disabled {
-      background: #666;
+      color: gray;
       cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      #toggleBtn {
+        width: 160px;
+        height: 160px;
+        font-size: 4rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Frequenze in loop</h1>
   <button id="toggleBtn" disabled>⏳</button>
   <audio id="myAudio" loop>
     <source src="assets/tracce-audio.mp3" type="audio/mpeg" />
@@ -57,7 +68,7 @@
 
     audio.addEventListener('loadedmetadata', () => {
       button.disabled = false;
-      button.textContent = '▶️';
+      button.textContent = '▶';
     });
 
     button.addEventListener('click', () => {
@@ -65,10 +76,10 @@
         const maxStart = Math.max(0, audio.duration - 1);
         audio.currentTime = Math.random() * maxStart;
         audio.play();
-        button.textContent = '⏸️';
+        button.textContent = '⏸';
       } else {
         audio.pause();
-        button.textContent = '▶️';
+        button.textContent = '▶';
       }
     });
   </script>
