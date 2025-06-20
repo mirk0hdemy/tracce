@@ -31,6 +31,7 @@
             padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli */
             touch-action: manipulation; /* Migliora la reattività al tocco su touchscreens */
             overflow: hidden; /* Previene scrollbar indesiderate se il contenuto è più grande della viewport */
+            position: relative; /* Necessario per posizionare il pulsante shuffle in modo assoluto */
         }
 
         /* Stili del contenitore principale del player */
@@ -47,6 +48,55 @@
             width: 400px; /* Larghezza predefinita per desktop */
         }
 
+        /* Nuovo wrapper per il contenitore del pianeta (senza il pulsante random) */
+        .top-section-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* gap: 1rem; Rimosso, non più necessario qui */
+            margin-bottom: 1.5rem; /* Spazio sotto questo blocco */
+        }
+
+        /* Stili del pulsante Shuffle (nuovo nome per "Random") - Posizionato in alto */
+        .shuffle-button {
+            all: unset; /* Rimuove stili predefiniti */
+            cursor: pointer;
+            color: white; /* Colore dell'icona bianco */
+            /* Dimensioni iniziali come le frecce (desktop) */
+            width: 40px; 
+            height: 40px; 
+            font-size: 1.8rem; 
+            padding: 0; /* Nessun padding extra per l'icona */
+            border: 1px solid transparent; /* Bordo trasparente di default */
+            border-radius: 50%; /* Rende il bottone circolare */
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* Posizionamento assoluto in alto e centrato */
+            position: absolute;
+            top: 50px; /* 50px dal bordo superiore */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20; /* Assicura che sia sopra gli altri elementi */
+        }
+
+        .shuffle-button:hover {
+            transform: translateX(-50%) scale(1.1); /* Lieve ingrandimento all'hover e mantiene centrato */
+            background-color: rgba(255, 255, 255, 0.1); /* Sfondo molto leggero all'hover */
+        }
+
+        .shuffle-button.active {
+            border: 1px solid white; /* Bordo bianco quando attivo */
+            background-color: transparent; /* MODIFICATO: Nessuno sfondo quando attivo */
+        }
+
+        .shuffle-button.active:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* MODIFICATO: Sfondo sull'hover SOLO quando attivo su desktop */
+            border-color: white; /* Mantiene il bordo bianco */
+        }
+
         /* Stili del contenitore dell'immagine del pianeta */
         .planet-image-container {
             position: relative; /* Aggiunto per il posizionamento assoluto del cerchio */
@@ -54,7 +104,6 @@
             height: 350px; /* Aumentato ulteriormente per desktop */
             border-radius: 50%; /* Rende l'immagine circolare */
             overflow: hidden; /* Nasconde ciò che eccede la forma circolare */
-            margin-bottom: 2.5rem; /* Aumentato lo spazio sotto l'immagine per distanziarla dal player */
             display: flex; /* Per centrare l'immagine all'interno del contenitore */
             justify-content: center;
             align-items: center;
@@ -109,8 +158,6 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Rimosso: .planet-image-container.rotating non è più necessario per applicare l'animazione */
-
         /* Contenitore per i bottoni di controllo (precedente, play/pausa, successivo) */
         .controls-wrapper {
             display: flex;
@@ -213,8 +260,25 @@
             .planet-image-container {
                 width: 380px; /* Aumentato per schermi medi per mantenerlo molto più grande */
                 height: 380px; /* Aumentato per schermi medi per mantenerlo molto più grande */
-                margin-bottom: 2rem;
+                /* Rimosso margin-bottom, ora gestito da top-section-wrapper */
             }
+
+            .shuffle-button {
+                width: 35px; /* Adattato per schermi medi */
+                height: 35px; /* Adattato per schermi medi */
+                font-size: 1.6rem; /* Adattato per schermi medi */
+                top: 30px; /* Leggermente più in alto su tablet */
+            }
+
+            /* Rimosso: .shuffle-button:hover qui per evitare override indesiderati */
+            /* Invece si gestisce con la regola generale per i dispositivi touch */
+            .shuffle-button.active:hover {
+                 /* Su mobile, l'hover sull'active non deve avere sfondo, ma il bordo deve rimanere */
+                 background-color: transparent; /* MODIFICATO */
+                 border-color: white; /* Mantiene il bordo bianco */
+                 transform: translateX(-50%) scale(1); /* MODIFICATO: Reset dell'ingrandimento e mantiene centrato */
+            }
+
 
             .play-pause-button {
                 width: 70px; /* Invariato */
@@ -232,20 +296,17 @@
                 font-size: 1.6rem; /* Invariato */
             }
 
-            /* Rimuove gli effetti hover sui dispositivi touch */
-            .play-pause-button:hover {
+            /* Rimuove gli effetti hover su tutti i bottoni sui dispositivi touch */
+            button:hover { /* REGOLA GENERALE PER I BOTTONI */
                 transform: scale(1); /* Reset dell'ingrandimento all'hover */
                 background-color: transparent; /* Reset dello sfondo all'hover */
                 box-shadow: none; /* Reset dell'ombra */
+                border-color: transparent; /* Reset del bordo all'hover per nav-button */
+            }
+            .play-pause-button:hover { /* Specifico per play/pause se necessario */
+                border-color: white; /* Assicura che il bordo di play/pause rimanga */
             }
 
-            .nav-button:hover {
-                transform: scale(1); /* Reset dell'ingrandimento all'hover */
-                background-color: transparent; /* Reset dello sfondo all'hover */
-                color: white; /* Assicura che il colore dell'icona rimanga bianco */
-                box-shadow: none; /* Reset dell'ombra */
-                border-color: transparent; /* Reset del bordo all'hover */
-            }
             /* Garantisce che lo stato "active" non aggiunga bordi o sfondi persistenti */
             .play-pause-button:active {
                 background-color: transparent;
@@ -254,6 +315,10 @@
             .nav-button:active {
                 background-color: transparent;
                 border-color: white; /* Mantiene il bordo bianco al click */
+            }
+            .shuffle-button:active { /* Aggiunto per il pulsante shuffle */
+                background-color: transparent;
+                border-color: white; /* Mantiene il bordo bianco al click se attivo */
             }
         }
 
@@ -268,7 +333,23 @@
             .planet-image-container {
                 width: 320px; /* Aumentato per schermi piccoli per mantenerlo molto più grande */
                 height: 320px; /* Aumentato per schermi piccoli per mantenerlo molto più grande */
-                margin-bottom: 1.8rem;
+                /* Rimosso margin-bottom, ora gestito da top-section-wrapper */
+            }
+
+            .shuffle-button {
+                width: 30px; /* Adattato per schermi piccoli */
+                height: 30px; /* Adattato per schermi piccoli */
+                font-size: 1.4rem; /* Adattato per schermi piccoli */
+                top: 20px; /* Leggermente più in alto su smartphone */
+            }
+
+            /* Rimosso: .shuffle-button:hover qui per evitare override indesiderati */
+            /* Invece si gestisce con la regola generale per i dispositivi touch */
+            .shuffle-button.active:hover {
+                 /* Su mobile, l'hover sull'active non deve avere sfondo, ma il bordo deve rimanere */
+                 background-color: transparent; /* MODIFICATO */
+                 border-color: white; /* Mantiene il bordo bianco */
+                 transform: translateX(-50%) scale(1); /* MODIFICATO: Reset dell'ingrandimento e mantiene centrato */
             }
 
             .play-pause-button {
@@ -287,20 +368,17 @@
                 font-size: 1.4rem; /* Invariato */
             }
 
-            /* Rimuove gli effetti hover sui dispositivi touch */
-            .play-pause-button:hover {
+            /* Rimuove gli effetti hover su tutti i bottoni sui dispositivi touch */
+            button:hover { /* REGOLA GENERALE PER I BOTTONI */
                 transform: scale(1); /* Reset dell'ingrandimento all'hover */
                 background-color: transparent; /* Reset dello sfondo all'hover */
                 box-shadow: none; /* Reset dell'ombra */
+                border-color: transparent; /* Reset del bordo all'hover per nav-button */
+            }
+            .play-pause-button:hover { /* Specifico per play/pause se necessario */
+                border-color: white; /* Assicura che il bordo di play/pause rimanga */
             }
 
-            .nav-button:hover {
-                transform: scale(1); /* Reset dell'ingrandimento all'hover */
-                background-color: transparent; /* Reset dello sfondo all'hover */
-                color: white; /* Assicura che il colore dell'icona rimanga bianco */
-                box-shadow: none; /* Reset dell'ombra */
-                border-color: transparent; /* Reset del bordo all'hover */
-            }
             /* Garantisce che lo stato "active" non aggiunga bordi o sfondi persistenti */
             .play-pause-button:active {
                 background-color: transparent;
@@ -310,21 +388,33 @@
                 background-color: transparent;
                 border-color: white; /* Mantiene il bordo bianco al click */
             }
+            .shuffle-button:active { /* Aggiunto per il pulsante shuffle */
+                background-color: transparent;
+                border-color: white; /* Mantiene il bordo bianco al click se attivo */
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Pulsante Random (shuffle) posizionato in alto sulla pagina -->
+    <button id="randomBtn" class="shuffle-button">
+        <span class="material-symbols-outlined">shuffle</span>
+    </button>
+
     <!-- Contenitore principale del player audio -->
     <div class="player-container">
-        <!-- Contenitore per l'immagine circolare del pianeta -->
-        <div class="planet-image-container">
-            <!-- L'attributo src verrà impostato dinamicamente dal JavaScript -->
-            <img src="" alt="Planet Image" id="planetImage">
-            <!-- Nuovo elemento: il cerchio nero centrale -->
-            <div class="cd-hole"></div>
-            <!-- Nuovo elemento: il cerchio con bordo -->
-            <div class="cd-ring"></div>
+        <!-- Wrapper per il contenitore del pianeta (senza il pulsante random, che è stato spostato) -->
+        <div class="top-section-wrapper">
+            <!-- Contenitore per l'immagine circolare del pianeta -->
+            <div class="planet-image-container">
+                <!-- L'attributo src verrà impostato dinamicamente dal JavaScript -->
+                <img src="" alt="" id="planetImage">
+                <!-- Nuovo elemento: il cerchio nero centrale -->
+                <div class="cd-hole"></div>
+                <!-- Nuovo elemento: il cerchio con bordo -->
+                <div class="cd-ring"></div>
+            </div>
         </div>
 
         <!-- Wrapper per i controlli di navigazione e riproduzione -->
@@ -368,20 +458,39 @@
         const trackNumberDisplay = document.getElementById('trackNumberDisplay');
         const planetImageContainer = document.querySelector('.planet-image-container');
         const planetImage = document.getElementById('planetImage');
+        const randomBtn = document.getElementById('randomBtn'); // Riferimento al nuovo pulsante random
 
         // Array delle tracce audio, con titolo e percorso del file
-        // AGGIORNATO: Percorsi ora puntano a assets/audio/ e assets/images/
         const tracks = [
-            { title: 'traccia_001', src: 'assets/audio/tr-001.wav', planetImage: 'assets/images/plnt-001.jpg' }, // Blu
-            { title: 'traccia_002', src: 'assets/audio/tr-002.wav', planetImage: 'assets/images/plnt-002.jpg' }, // Rosso
-            { title: 'traccia_003', src: 'assets/audio/tr-003.wav', planetImage: 'assets/images/plnt-003.jpg' }  // Verde
+            { title: 'traccia_001', src: 'assets/audio/tr-001.wav', planetImage: 'assets/images/plnt-001.jpg' },
+            { title: 'traccia_002', src: 'assets/audio/tr-002.wav', planetImage: 'assets/images/plnt-002.jpg' },
+            { title: 'traccia_003', src: 'assets/audio/tr-003.wav', planetImage: 'assets/images/plnt-003.jpg' },
+            { title: 'traccia_004', src: 'assets/audio/tr-004.wav', planetImage: 'assets/images/plnt-004.jpg' },
+            { title: 'traccia_005', src: 'assets/audio/tr-005.wav', planetImage: 'assets/images/plnt-005.jpg' },
+            { title: 'traccia_006', src: 'assets/audio/tr-006.wav', planetImage: 'assets/images/plnt-006.jpg' },
+            { title: 'traccia_007', src: 'assets/audio/tr-007.wav', planetImage: 'assets/images/plnt-007.jpg' },
+            { title: 'traccia_008', src: 'assets/audio/tr-008.wav', planetImage: 'assets/images/plnt-008.jpg' },
+            { title: 'traccia_009', src: 'assets/audio/tr-009.wav', planetImage: 'assets/images/plnt-009.jpg' }
         ];
 
         let currentTrackIndex = 0; // Indice della traccia attualmente in riproduzione
+        let isRandomMode = false; // Stato della modalità casuale
 
         // Icone SVG per i stati Play e Pausa
         const playIcon = `<path d="M8 5v14l11-7z"/>`;
         const pauseIcon = `<path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/>`;
+
+        /**
+         * Genera un indice di traccia casuale che non sia quello corrente (se possibile).
+         * @returns {number} L'indice della traccia casuale.
+         */
+        function getRandomTrackIndex() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * tracks.length);
+            } while (newIndex === currentTrackIndex && tracks.length > 1); // Assicura una traccia diversa se ce ne sono più di una
+            return newIndex;
+        }
 
         /**
          * Carica una traccia audio specificata dall'indice nell'array `tracks`.
@@ -468,20 +577,41 @@
 
         // Event listener per il bottone 'Precedente'
         prevBtn.addEventListener('click', () => {
-            let newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            let newIndex;
+            if (isRandomMode) {
+                newIndex = getRandomTrackIndex();
+            } else {
+                newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            }
             loadTrack(newIndex, false); 
         });
 
         // Event listener per il bottone 'Successivo'
         nextBtn.addEventListener('click', () => {
-            let newIndex = (currentTrackIndex + 1) % tracks.length;
+            let newIndex;
+            if (isRandomMode) {
+                newIndex = getRandomTrackIndex();
+            } else {
+                newIndex = (currentTrackIndex + 1) % tracks.length;
+            }
             loadTrack(newIndex, false); 
         });
 
-        // Event listener: quando una traccia finisce (loop continuo)
+        // Event listener: quando una traccia finisce (loop continuo o random)
         audio.addEventListener('ended', () => {
-            let nextIndex = (currentTrackIndex + 1) % tracks.length; 
+            let nextIndex;
+            if (isRandomMode) {
+                nextIndex = getRandomTrackIndex();
+            } else {
+                nextIndex = (currentTrackIndex + 1) % tracks.length; 
+            }
             loadTrack(nextIndex, true); 
+        });
+
+        // Event listener per il pulsante 'Random'
+        randomBtn.addEventListener('click', () => {
+            isRandomMode = !isRandomMode; // Inverti lo stato
+            randomBtn.classList.toggle('active', isRandomMode); // Aggiorna la classe per lo stile
         });
 
         // Inizializza il player con la prima traccia al caricamento della pagina
