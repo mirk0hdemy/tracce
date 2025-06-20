@@ -39,10 +39,10 @@
             display: flex;
             flex-direction: column; /* Mobile-first: elementi impilati verticalmente */
             align-items: center;
-            gap: 1.5rem; /* Spazio tra il pianeta e la sezione del player info su mobile */
+            gap: 1.5rem; /* Spazio tra il pianeta e la sezione del player info su mobile (solo se non space-between) */
             max-width: 90%;
             width: min(90vw, 400px); /* Larghezza massima per mobile, si adatta ma non oltre 400px */
-            height: auto; /* Altezza adattiva per mobile */
+            height: auto; /* Altezza adattiva per mobile (cambierà nelle media query) */
             max-height: calc(100vh - 40px); /* Limita l'altezza su mobile per prevenire scroll (100vh - padding body) */
             padding: 0;
             margin-top: 0; /* Assicura che non ci sia un margin-top indesiderato da mobile */
@@ -53,7 +53,6 @@
             display: flex; /* Per centrare l'immagine del pianeta all'interno di quest'area */
             justify-content: center;
             align-items: center;
-            /* Nessun margin-bottom, gestito dal gap di .main-content */
         }
 
         /* Stili per il contenitore dell'immagine del pianeta */
@@ -119,7 +118,6 @@
             flex-direction: column; /* Controlli e testo impilati verticalmente */
             align-items: center; /* Centra gli elementi all'interno di questa colonna */
             gap: 1.5rem; /* Spazio tra controls-wrapper e track-info-text */
-            /* Nessun margin-top qui, gestito dal gap di .main-content o dalla media query desktop */
         }
 
         /* Contenitore per i bottoni di controllo */
@@ -281,6 +279,7 @@
             .player-controls-and-info {
                 align-items: flex-start;
                 gap: 1.5rem;
+                margin-top: 0; /* Reset margin-top per desktop */
             }
             
             /* Assicura che i margini specifici mobile siano azzerati su desktop se non desiderati */
@@ -310,24 +309,29 @@
         /* Media queries per la responsività su schermi medi (es. tablet in verticale) */
         @media (max-width: 768px) {
             body {
-                justify-content: center; /* Riporta al centraggio verticale per il body su mobile */
+                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* MODIFICATO: Rimuovi padding dal body per gestione interna */
             }
             .main-content {
                 width: min(90vw, 475px);
-                gap: 1rem;
-                margin-top: 0; /* Rimuovi il margin-top fisso */
-                max-height: calc(100vh - 40px); /* Regola altezza massima per evitare scroll */
-            }
-
-            .player-controls-and-info {
-                margin-top: -10vh; /* MODIFICATO: Sposta il player e info 10% dell'altezza della viewport più in alto */
-                gap: 1rem;
+                height: 100vh; /* MODIFICATO: Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* MODIFICATO: Previene lo scrolling verticale */
+                gap: 0; /* MODIFICATO: Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* MODIFICATO: Pianeta a 12% dal top */
+                padding-bottom: 10vh; /* MODIFICATO: Player a 10% dal bottom */
+                justify-content: space-between; /* MODIFICATO: Spingi elementi ai bordi del main-content */
             }
 
             .planet-image-container {
                 width: min(90vw, 475px);
                 height: min(90vw, 475px);
             }
+
+            .player-controls-and-info {
+                margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
+                gap: 1rem;
+            }
+
             /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
 
             /* Rimuove gli effetti hover/active su tutti i bottoni sui dispositivi touch tranne play/pausa */
@@ -355,18 +359,17 @@
         /* Media queries per la responsività su schermi piccoli (es. smartphone) */
         @media (max-width: 480px) {
             body {
-                justify-content: center; /* Riporta al centraggio verticale per il body su mobile */
+                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* MODIFICATO: Rimuovi padding dal body per gestione interna */
             }
             .main-content {
                 width: min(95vw, 400px);
-                gap: 0.8rem;
-                margin-top: 0; /* Rimuovi il margin-top fisso */
-                max-height: calc(100vh - 40px); /* Regola altezza massima per evitare scroll */
-            }
-
-            .player-controls-and-info {
-                margin-top: -10vh; /* MODIFICATO: Sposta il player e info 10% dell'altezza della viewport più in alto */
-                gap: 0.8rem;
+                height: 100vh; /* MODIFICATO: Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* MODIFICATO: Previene lo scrolling verticale */
+                gap: 0; /* MODIFICATO: Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* MODIFICATO: Pianeta a 12% dal top */
+                padding-bottom: 10vh; /* MODIFICATO: Player a 10% dal bottom */
+                justify-content: space-between; /* MODIFICATO: Spingi elementi ai bordi del main-content */
             }
 
             .planet-image-container {
@@ -374,6 +377,11 @@
                 height: min(95vw, 400px);
             }
             
+            .player-controls-and-info {
+                margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
+                gap: 0.8rem;
+            }
+
             /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
 
             /* Rimuove gli effetti hover/active su tutti i bottoni sui dispositivi touch tranne play/pausa */
