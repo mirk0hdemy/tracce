@@ -68,14 +68,28 @@
         /* Stili del cerchio nero centrale (foro del CD) */
         .cd-hole {
             position: absolute;
-            width: 25px; /* Dimensione del cerchio */
-            height: 25px; /* Dimensione del cerchio */
+            width: 30px; /* Aumentato da 25px a 30px */
+            height: 30px; /* Aumentato da 25px a 30px */
             background-color: black; /* Colore nero */
             border-radius: 50%; /* Rende il div un cerchio */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%); /* Centra il cerchio perfettamente */
             z-index: 10; /* Assicura che sia sopra l'immagine */
+        }
+
+        /* Nuovo stile per il cerchio con bordo */
+        .cd-ring {
+            position: absolute;
+            width: 50px; /* Dimensione del cerchio */
+            height: 50px; /* Dimensione del cerchio */
+            background: none; /* Nessuno sfondo */
+            border: 2px solid black; /* Bordo di 2px nero (modificato da bianco) */
+            border-radius: 50%; /* Rende il div un cerchio */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centra il cerchio perfettamente */
+            z-index: 11; /* Assicura che sia sopra l'immagine e il cd-hole */
         }
 
         /* Stili dell'immagine del pianeta */
@@ -306,6 +320,8 @@
             <img src="" alt="Planet Image" id="planetImage">
             <!-- Nuovo elemento: il cerchio nero centrale -->
             <div class="cd-hole"></div>
+            <!-- Nuovo elemento: il cerchio con bordo -->
+            <div class="cd-ring"></div>
         </div>
 
         <!-- Wrapper per i controlli di navigazione e riproduzione -->
