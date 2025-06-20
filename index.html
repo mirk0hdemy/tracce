@@ -58,6 +58,10 @@
             justify-content: center;
             align-items: center;
             transition: transform 0.1s ease-out; /* Transizione per un effetto più morbido all'avvio/fermata animazione */
+            
+            /* Applica l'animazione di rotazione qui, inizialmente in pausa */
+            animation: rotate360 20s linear infinite;
+            animation-play-state: paused; /* Inizia con l'animazione in pausa */
         }
 
         /* Stili dell'immagine del pianeta */
@@ -73,11 +77,8 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
-        /* Applica l'animazione quando la classe 'rotating' è presente */
-        .planet-image-container.rotating {
-            animation: rotate360 20s linear infinite; /* 20 secondi per un giro completo, lineare, infinito */
-        }
+        
+        /* Rimosso: .planet-image-container.rotating non è più necessario per applicare l'animazione */
 
         /* Contenitore per i bottoni di controllo (precedente, play/pausa, successivo) */
         .controls-wrapper {
@@ -329,9 +330,9 @@
             // Se l'audio era in riproduzione, lo metto in pausa prima di cambiare traccia
             if (!audio.paused) {
                 audio.pause();
-                icon.innerHTML = playIcon; // Reimposto l'icona su Play
-                planetImageContainer.classList.remove('rotating'); // Ferma la rotazione
             }
+            icon.innerHTML = playIcon; // Reimposto l'icona su Play
+            planetImageContainer.style.animationPlayState = 'paused'; // Metti in pausa la rotazione
 
             currentTrackIndex = index; // Aggiorno l'indice della traccia corrente
             audio.src = tracks[currentTrackIndex].src; // Imposto la sorgente del file audio
@@ -344,7 +345,7 @@
             if (shouldPlayAfterLoad) {
                 audio.play();
                 icon.innerHTML = pauseIcon;
-                planetImageContainer.classList.add('rotating');
+                planetImageContainer.style.animationPlayState = 'running'; // Riprende la rotazione
             }
         }
 
@@ -358,11 +359,11 @@
             if (audio.paused) {
                 audio.play(); // Avvia la riproduzione
                 icon.innerHTML = pauseIcon; // Cambia icona a Pausa
-                planetImageContainer.classList.add('rotating'); // Avvia la rotazione
+                planetImageContainer.style.animationPlayState = 'running'; // Riprende la rotazione
             } else {
                 audio.pause(); // Metti in pausa la riproduzione
                 icon.innerHTML = playIcon; // Cambia icona a Play
-                planetImageContainer.classList.remove('rotating'); // Ferma la rotazione
+                planetImageContainer.style.animationPlayState = 'paused'; // Metti in pausa la rotazione senza resettarla
             }
         });
 
@@ -370,16 +371,16 @@
         prevBtn.addEventListener('click', () => {
             // Calcola l'indice precedente con la navigazione circolare
             let newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            const wasPlaying = !audio.paused; // Controlla se l'audio stava riproducendo prima del cambio traccia
-            loadTrack(newIndex, wasPlaying); // Carica la traccia e riproduci se stava riproducendo
+            // Carica la traccia, ma NON la riprodurre automaticamente
+            loadTrack(newIndex, false); 
         });
 
         // Event listener per il bottone 'Successivo'
         nextBtn.addEventListener('click', () => {
             // Calcola l'indice successivo con la navigazione circolare
             let newIndex = (currentTrackIndex + 1) % tracks.length;
-            const wasPlaying = !audio.paused; // Controlla se l'audio stava riproducendo prima del cambio traccia
-            loadTrack(newIndex, wasPlaying); // Carica la traccia e riproduci se stava riproducendo
+            // Carica la traccia, ma NON la riprodurre automaticamente
+            loadTrack(newIndex, false); 
         });
 
         // Event listener: quando una traccia finisce (loop continuo)
@@ -391,7 +392,7 @@
         // Inizializza il player con la prima traccia al caricamento della pagina
         document.addEventListener('DOMContentLoaded', () => {
             loadTrack(currentTrackIndex, false); // Carica la prima traccia, ma non avviare automaticamente la riproduzione
-            planetImageContainer.classList.remove('rotating'); // Assicurati che non ruoti all'avvio
+            // La rotazione è già in pausa per default nel CSS, quindi non serve rimuovere la classe qui.
         });
     </script>
 </body>
