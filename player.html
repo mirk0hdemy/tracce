@@ -53,7 +53,7 @@
             display: flex; /* Per centrare l'immagine del pianeta all'interno di quest'area */
             justify-content: center;
             align-items: center;
-            flex-shrink: 0; /* Impedisci che si restringa su mobile */
+            /* flex-shrink: 0; Rimosso per permettere il ridimensionamento se necessario */
         }
 
         /* Stili per il contenitore dell'immagine del pianeta */
@@ -119,8 +119,8 @@
             flex-direction: column; /* Controlli e testo impilati verticalmente */
             align-items: center; /* Centra gli elementi all'interno di questa colonna */
             gap: 1.5rem; /* Spazio tra controls-wrapper e track-info-text */
-            flex-shrink: 0; /* Impedisci che si restringa su mobile */
-            flex-grow: 0; /* Impedisci che cresca oltre il necessario su mobile */
+            /* flex-shrink: 0; Rimosso per permettere il ridimensionamento se necessario */
+            /* flex-grow: 0; Rimosso per permettere il ridimensionamento se necessario */
         }
 
         /* Contenitore per i bottoni di controllo */
@@ -218,7 +218,8 @@
             height: 6px;
             background-color: white;
             border-radius: 50%;
-            top: calc(100% + 5px);
+            bottom: -5px; /* MODIFICATO: Posiziona il pallino 5px sotto il bordo inferiore del bottone */
+            top: auto; /* Rimosso l'override del top precedente */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
