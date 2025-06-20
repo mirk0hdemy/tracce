@@ -12,138 +12,138 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&family=Orbit&display=swap" rel="stylesheet" />
 
     <style>
-        /* Global styles and reset to ensure a clean base across all browsers */
+        /* Stili globali e reset per garantire una base pulita su tutti i browser */
         * {
-            -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile devices */
-            box-sizing: border-box; /* Includes padding and border in the total width/height of the element */
+            -webkit-tap-highlight-color: transparent; /* Rimuove l'evidenziazione al tocco su dispositivi mobili */
+            box-sizing: border-box; /* Include padding e border nella larghezza/altezza totale dell'elemento */
         }
 
         body {
-            background-color: black; /* Black background, as requested */
-            color: white; /* White text color */
-            font-family: 'Orbit', sans-serif; /* Use Orbit font */
+            background-color: black; /* Sfondo nero, come richiesto */
+            color: white; /* Colore del testo bianco */
+            font-family: 'Orbit', sans-serif; /* Utilizzo del font Orbit */
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Vertically centers content */
-            align-items: center; /* Horizontally centers content */
-            height: 100vh; /* Body takes full viewport height */
+            justify-content: center; /* Centra verticalmente il contenuto */
+            align-items: center; /* Centra orizzontalmente il contenuto */
+            height: 100vh; /* Il body occupa l'intera altezza della viewport */
             margin: 0;
-            padding: 20px; /* General padding to prevent content touching edges on small screens */
-            touch-action: manipulation; /* Improves touch responsiveness on touchscreens */
-            overflow: hidden; /* Prevents unwanted scrollbars if content is larger than viewport */
-            position: relative; /* Necessary for positioning the main container, if needed in the future */
+            padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli */
+            touch-action: manipulation; /* Migliora la reattività al tocco su touchscreens */
+            overflow: hidden; /* Previene scrollbar indesiderate se il contenuto è più grande della viewport */
+            position: relative; /* Necessario per posizionare il contenitore principale, se in futuro servisse */
         }
 
-        /* Styles for the main player container */
+        /* Stili del contenitore principale del player */
         .player-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem; /* Space between internal elements, slightly wider to balance the new layout */
+            gap: 1.5rem; /* Spazio tra gli elementi interni, leggermente più ampio per bilanciare il nuovo layout */
             padding: 20px;
-            border-radius: 0; /* Square borders for minimalist aesthetic */
-            background-color: black; /* No additional background */
-            box-shadow: none; /* No shadow, as requested */
-            max-width: 90%; /* Limits max width to 90% of screen (useful on very wide screens) */
-            width: 400px; /* Default width for desktop */
+            border-radius: 0; /* Bordi squadrati per l'estetica minimalista */
+            background-color: black; /* Nessuno sfondo aggiuntivo */
+            box-shadow: none; /* Nessuna ombra, come richiesto */
+            max-width: 90%; /* Limita la larghezza massima a 90% dello schermo (utile su schermi molto larghi) */
+            width: 400px; /* Larghezza predefinita per desktop */
         }
 
-        /* Wrapper for the planet container (kept for vertical spacing consistency) */
+        /* Wrapper per il contenitore del pianeta (lo lascio per coerenza di spaziatura verticale) */
         .top-section-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Styles for the planet image container */
+        /* Stili per il contenitore dell'immagine del pianeta */
         .planet-image-container {
-            position: relative; /* Added for absolute positioning of the circle */
-            width: 350px; /* Further increased for desktop */
-            height: 350px; /* Further increased for desktop */
-            border-radius: 50%; /* Makes the image circular */
-            overflow: hidden; /* Hides anything exceeding the circular shape */
-            display: flex; /* To center the image inside the container */
+            position: relative; /* Aggiunto per il posizionamento assoluto del cerchio */
+            width: 350px; /* Aumentato ulteriormente per desktop */
+            height: 350px; /* Aumentato ulteriormente per desktop */
+            border-radius: 50%; /* Rende l'immagine circolare */
+            overflow: hidden; /* Nasconde ciò che eccede la forma circolare */
+            display: flex; /* Per centrare l'immagine all'interno del contenitore */
             justify-content: center;
             align-items: center;
-            transition: transform 0.1s ease-out; /* Smooth transition for animation start/stop */
+            transition: transform 0.1s ease-out; /* Transizione per un effetto più morbido all'avvio/fermata animazione */
             
-            /* Apply rotation animation here, initially paused */
+            /* Applica l'animazione di rotazione qui, inizialmente in pausa */
             animation: rotate360 20s linear infinite;
             animation-play-state: paused;
 
-            /* New: Blue background as placeholder */
-            background: radial-gradient(circle at center, #00008B 0%, #00005C 100%); /* Dark blue gradient */
+            /* Nuovo: Sfondo blu come placeholder */
+            background: radial-gradient(circle at center, #00008B 0%, #00005C 100%); /* Sfumatura di blu scuro */
         }
 
-        /* Styles for the central black circle (CD hole) */
+        /* Stili del cerchio nero centrale (foro del CD) */
         .cd-hole {
             position: absolute;
-            width: 25px; /* Hole size */
-            height: 25px; /* Hole size */
-            background-color: black; /* Black color */
-            border-radius: 50%; /* Makes the div a circle */
+            width: 25px; /* Dimensione del foro */
+            height: 25px; /* Dimensione del foro */
+            background-color: black; /* Colore nero */
+            border-radius: 50%; /* Rende il div un cerchio */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); /* Perfectly centers the circle */
-            z-index: 10; /* Ensures it's above the image */
+            transform: translate(-50%, -50%); /* Centra il cerchio perfettamente */
+            z-index: 10; /* Assicura che sia sopra l'immagine */
         }
 
-        /* New style for the bordered circle */
+        /* Nuovo stile per il cerchio con bordo */
         .cd-ring {
             position: absolute;
-            width: 75px; /* Circle size */
-            height: 75px; /* Circle size */
-            background: none; /* No background */
-            border: 2px solid black; /* 2px black border */
-            border-radius: 50%; /* Makes the div a circle */
+            width: 75px; /* Dimensione del cerchio */
+            height: 75px; /* Dimensione del cerchio */
+            background: none; /* Nessuno sfondo */
+            border: 2px solid black; /* Bordo di 2px nero */
+            border-radius: 50%; /* Rende il div un cerchio */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); /* Perfectly centers the circle */
-            z-index: 11; /* Ensures it's above the image and cd-hole */
+            transform: translate(-50%, -50%); /* Centra il cerchio perfettamente */
+            z-index: 11; /* Assicura che sia sopra l'immagine e il cd-hole */
         }
 
-        /* Styles for the planet image */
+        /* Stili dell'immagine del pianeta */
         #planetImage {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures the image completely covers the container, adapting */
-            display: block; /* Removes extra space below the image */
+            object-fit: cover; /* Assicura che l'immagine copra completamente il contenitore, adattandosi */
+            display: block; /* Rimuove lo spazio extra sotto l'immagine */
         }
 
-        /* Rotation animation for the planet image */
+        /* Animazione di rotazione per l'immagine del pianeta */
         @keyframes rotate360 {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
         
-        /* Container for control buttons (shuffle, previous, play/pause, next, loop) */
+        /* Contenitore per i bottoni di controllo (shuffle, precedente, play/pausa, successivo, loop) */
         .controls-wrapper {
             display: flex;
             align-items: center;
-            justify-content: center; /* Horizontally centers buttons */
-            gap: 1.2rem; /* Space between control buttons, in relative units */
-            margin-top: 3rem; /* Moved closer to the planet (from 150px to 3rem) */
+            justify-content: center; /* Centra i bottoni orizzontalmente */
+            gap: 1.2rem; /* Spazio tra i bottoni di controllo, in unità relative */
+            margin-top: 3rem; /* Avvicinato al pianeta (da 150px a 3rem) */
         }
 
-        /* Base style for all player buttons */
+        /* Stile base per tutti i bottoni del player */
         button {
-            all: unset; /* Removes all default button styles */
+            all: unset; /* Rimuove tutti gli stili predefiniti del bottone */
             display: flex;
             justify-content: center;
             align-items: center;
-            background: none; /* Transparent background */
+            background: none; /* Sfondo trasparente */
             cursor: pointer;
-            transition: transform 0.1s ease-out, background-color 0.2s ease, border-color 0.2s ease; /* Added transition for background and border */
-            position: relative; /* Crucial for positioning the dots */
-            /* REMOVED: overflow: hidden; to allow the dot to be visible */
+            transition: transform 0.1s ease-out, background-color 0.2s ease, border-color 0.2s ease; /* Aggiunto transition per sfondo e bordo */
+            position: relative; /* Cruciale per posizionare i pallini */
+            /* Rimosso: overflow: hidden; */
         }
 
-        /* Removes ripple effect to maintain minimalism */
+        /* Rimuovi l'effetto ripple per mantenere il minimalismo */
         button:active::before {
             content: none;
         }
 
-        /* Styles for Play/Pause button */
+        /* Stili del bottone Play/Pausa */
         .play-pause-button {
             width: 80px; 
             height: 80px; 
@@ -177,7 +177,7 @@
             fill: gray;
         }
 
-        /* Styles for navigation buttons (Previous/Next) and Shuffle/Loop */
+        /* Stili dei bottoni di navigazione (Precedente/Successivo) e Shuffle/Loop */
         .nav-button,
         .shuffle-button,
         .loop-button {
@@ -188,9 +188,10 @@
             font-size: 1.8rem; 
             background: none; 
             box-shadow: none; 
-            border: 1px solid transparent; /* Transparent border by default */
+            border: 1px solid transparent; /* Bordo trasparente di default */
         }
 
+        /* Hover states for desktop */
         .nav-button:hover,
         .shuffle-button:hover,
         .loop-button:hover {
@@ -201,7 +202,7 @@
             border-color: white; /* White border on hover */
         }
 
-        /* Styles specific to the activation dot (shuffle and loop) */
+        /* Stili specifici per il pallino di attivazione (shuffle e loop) */
         .shuffle-button.active::after,
         .loop-button.active::after { /* Applied to both buttons */
             content: '';
@@ -223,18 +224,18 @@
             display: none;
         }
 
-        /* Styles specific to the active Shuffle button (no border, no background) */
+        /* Stili specifici per il pulsante Shuffle attivo (no border, no background) */
         .shuffle-button.active {
             border: 1px solid transparent; /* No border when active */
             background-color: transparent; /* No background when active */
         }
-        /* Styles specific to the active Loop button (no border, no background) */
+        /* Stili specifici per il pulsante Loop attivo (no border, no background) */
         .loop-button.active {
             border: 1px solid transparent; /* No border when active */
             background-color: transparent; /* No background when active */
         }
 
-        /* Styles for "traccia_00N" text */
+        /* Stili per il testo "traccia_00N" */
         .track-info-text {
             font-size: 1.2rem;
             text-transform: lowercase; /* Ensures text is always lowercase */
@@ -272,33 +273,36 @@
                 font-size: 1.6rem; 
             }
 
-            /* Removes hover effects on all buttons on touch devices */
+            /* --- MOBILE-SPECIFIC STYLES: NO HOVER/ACTIVE BACKGROUND/BORDER FOR NAV/SHUFFLE/LOOP --- */
+
+            /* Remove hover effects for all buttons on touch devices */
             button:hover { 
-                transform: scale(1); 
-                background-color: transparent; 
+                transform: scale(1); /* Reset enlargement on hover */
+                background-color: transparent !important; /* Force transparent background */
                 box-shadow: none; 
-                border-color: transparent; 
+                border-color: transparent !important; /* Force transparent border */
             }
-            /* Exception for play-pause to keep the white border on hover if logic requires it */
+            /* Exception for play-pause to keep the white border on hover for consistency if desired */
             .play-pause-button:hover { 
-                border-color: white; 
+                border-color: white; /* Maintain white border on hover for play/pause */
+                background-color: rgba(255, 255, 255, 0.1); /* Maintain slight background on hover for play/pause */
+                transform: scale(1.05); /* Maintain slight scale on hover for play/pause */
             }
 
-            /* Ensures that the "active" state does not add persistent borders or backgrounds */
-            .play-pause-button:active,
+            /* Ensure that the "active" state does not add persistent borders or backgrounds */
+            .play-pause-button:active { /* Keep play/pause active state */
+                background-color: rgba(255, 255, 255, 0.2) !important; /* Slightly more visible active state for play/pause */
+                border-color: white !important; /* Maintain white border on active for play/pause */
+                transform: scale(1.05);
+            }
+
+            /* For nav, shuffle, and loop buttons, ensure active state is transparent */
             .nav-button:active,
             .shuffle-button:active,
             .loop-button:active { 
-                background-color: transparent;
-                border-color: transparent; 
-                transform: scale(1); 
-            }
-            /* On mobile, active buttons should NOT have a background on hover */
-            .shuffle-button.active:hover,
-            .loop-button.active:hover {
-                 background-color: transparent;
-                 border-color: transparent;
-                 transform: scale(1);
+                background-color: transparent !important; /* Force transparent background on active */
+                border-color: transparent !important; /* Force transparent border on active */
+                transform: scale(1); /* Ensure no persistent enlargements */
             }
         }
 
@@ -328,33 +332,36 @@
                 font-size: 1.4rem; 
             }
 
-            /* Removes hover effects on all buttons on touch devices */
+            /* --- MOBILE-SPECIFIC STYLES: NO HOVER/ACTIVE BACKGROUND/BORDER FOR NAV/SHUFFLE/LOOP --- */
+
+            /* Remove hover effects for all buttons on touch devices */
             button:hover { 
                 transform: scale(1); 
-                background-color: transparent; 
+                background-color: transparent !important; /* Force transparent background */
                 box-shadow: none; 
-                border-color: transparent; 
+                border-color: transparent !important; /* Force transparent border */
             }
-            /* Exception for play-pause to keep the white border on hover if logic requires it */
+            /* Exception for play-pause to keep the white border on hover for consistency if desired */
             .play-pause-button:hover { 
-                border-color: white; 
+                border-color: white; /* Maintain white border on hover for play/pause */
+                background-color: rgba(255, 255, 255, 0.1); /* Maintain slight background on hover for play/pause */
+                transform: scale(1.05); /* Maintain slight scale on hover for play/pause */
             }
 
-            /* Ensures that the "active" state does not add persistent borders or backgrounds */
-            .play-pause-button:active,
+            /* Ensure that the "active" state does not add persistent borders or backgrounds */
+            .play-pause-button:active { /* Keep play/pause active state */
+                background-color: rgba(255, 255, 255, 0.2) !important; /* Slightly more visible active state for play/pause */
+                border-color: white !important; /* Maintain white border on active for play/pause */
+                transform: scale(1.05);
+            }
+
+            /* For nav, shuffle, and loop buttons, ensure active state is transparent */
             .nav-button:active,
             .shuffle-button:active,
             .loop-button:active { 
-                background-color: transparent;
-                border-color: transparent; 
-                transform: scale(1); 
-            }
-            /* On mobile, active buttons should NOT have a background on hover */
-            .shuffle-button.active:hover,
-            .loop-button.active:hover {
-                 background-color: transparent;
-                 border-color: transparent;
-                 transform: scale(1);
+                background-color: transparent !important; /* Force transparent background on active */
+                border-color: transparent !important; /* Force transparent border on active */
+                transform: scale(1); /* Ensure no persistent enlargements */
             }
         }
     </style>
