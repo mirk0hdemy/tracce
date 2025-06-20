@@ -31,6 +31,19 @@
             overflow: hidden;
         }
 
+        /* Nuovo wrapper per il contenuto principale */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Sposta il wrapper di 50px verso l'alto rispetto alla sua posizione centrata */
+            transform: translateY(-50px); 
+            /* Aggiusta anche su mobile se necessario */
+            @media (max-width: 480px) {
+                transform: translateY(-30px); /* Meno spinta verso l'alto su schermi molto piccoli */
+            }
+        }
+
         /* Stili del titolo */
         .main-title {
             font-family: 'Orbit', sans-serif;
@@ -53,7 +66,6 @@
             font-size: 1.5rem;
             cursor: pointer;
             transition: background-color 0.2s ease, transform 0.2s ease; /* Transizione per hover */
-            /* text-transform: uppercase; <--- Rimosso, il testo sarà come scritto nell'HTML */
             letter-spacing: 0.05em;
         }
 
@@ -88,8 +100,10 @@
 </head>
 <body>
 
-    <h1 class="main-title">TRACCE</h1>
-    <a href="player.html" class="explore-button">esplora</a>
+    <div class="content-wrapper">
+        <h1 class="main-title">TRACCE</h1>
+        <a href="player.html" class="explore-button">esplora</a>
+    </div>
 
 </body>
 </html>
