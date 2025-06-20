@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>TRACCE</title>
+    <!-- Icona del sito -->
+    <link rel="icon" type="image/png" href="assets/images/saturn-icon.png">
+    <!-- Meta tag per la responsività, essenziale per adattare il contenuto alla larghezza del dispositivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Material Symbols per le icone e Font Orbit per il testo -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&family=Orbit&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Stili globali e reset per garantire una base pulita su tutti i browser */
+        * {
+            -webkit-tap-highlight-color: transparent; /* Rimuove l'evidenziazione al tocco su dispositivi mobili */
+            box-sizing: border-box; /* Include padding e border nella larghezza/altezza totale dell'elemento */
+        }
+
+        body {
+            background-color: black; /* Sfondo nero, come richiesto */
+            color: white; /* Colore del testo bianco */
+            font-family: 'Orbit', sans-serif; /* Utilizzo del font Orbit */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra verticalmente il contenuto */
+            align-items: center; /* Centra orizzontalmente il contenuto */
+            height: 100vh; /* Il body occupa l'intera altezza della viewport */
+            margin: 0;
+            padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli */
+            touch-action: manipulation; /* Migliora la reattività al tocco su touchscreens */
+            overflow: hidden; /* Previene scrollbar indesiderate se il contenuto è più grande della viewport */
+        }
+
+        /* Stili del contenitore principale del player */
+        .player-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem; /* Spazio tra gli elementi interni, leggermente più ampio per bilanciare il nuovo layout */
+            padding: 20px;
+            border-radius: 0; /* Bordi squadrati per l'estetica minimalista */
+            background-color: black; /* Nessuno sfondo aggiuntivo */
+            box-shadow: none; /* Nessuna ombra, come richiesto */
+            max-width: 90%; /* Limita la larghezza massima a 90% dello schermo (utile su schermi molto larghi) */
+            width: 400px; /* Larghezza predefinita per desktop */
+        }
+
+        /* Stili del contenitore dell'immagine del pianeta */
+        .planet-image-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* Rende l'immagine circolare */
+            overflow: hidden; /* Nasconde ciò che eccede la forma circolare */
+            margin-bottom: 2.5rem; /* Aumentato lo spazio sotto l'immagine per distanziarla dal player */
+            display: flex; /* Per centrare l'immagine all'interno del contenitore */
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s ease-out; /* Transizione per un effetto più morbido all'avvio/fermata animazione */
+            
+            /* Applica l'animazione di rotazione qui, inizialmente in pausa */
+            animation: rotate360 20s linear infinite;
+            animation-play-state: paused; /* Inizia con l'animazione in pausa */
+        }
+
+        /* Stili dell'immagine del pianeta */
+        #planetImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Assicura che l'immagine copra completamente il contenitore, adattandosi */
+            display: block; /* Rimuove lo spazio extra sotto l'immagine */
+        }
+
+        /* Animazione di rotazione per l'immagine del pianeta */
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Rimosso: .planet-image-container.rotating non è più necessario per applicare l'animazione */
+
+        /* Contenitore per i bottoni di controllo (precedente, play/pausa, successivo) */
+        .controls-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem; /* Spazio tra i bottoni di controllo, in unità relative */
+        }
+
+        /* Stile base per tutti i bottoni del player */
+        button {
+            all: unset; /* Rimuove tutti gli stili predefiniti del bottone */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: none; /* Sfondo trasparente */
+            cursor: pointer;
+            transition: transform 0.1s ease-out; /* Transizione rapida per un feedback reattivo */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Rimuovi l'effetto ripple per mantenere il minimalismo */
+        button:active::before {
+            content: none;
+        }
+
+        /* Stili del bottone Play/Pausa */
+        .play-pause-button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* Circolare */
+            border: 1px solid white; /* Bordo bianco sottile */
+            background: none; /* Sfondo trasparente */
+            box-shadow: none; /* Nessuna ombra */
+        }
+
+        .play-pause-button:hover {
+            transform: scale(1.05); /* Lieve ingrandimento all'hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Sfondo molto leggero all'hover */
+            box-shadow: none; /* Nessuna ombra */
+        }
+
+        .play-pause-button svg {
+            width: 50px; /* Dimensione dell'icona */
+            height: 50px;
+            fill: white; /* Colore dell'icona bianco */
+        }
+
+        .play-pause-button:disabled {
+            opacity: 0.4; /* Rende il bottone disabilitato meno visibile */
+            cursor: not-allowed;
+            border-color: gray;
+            background: none;
+            box-shadow: none;
+        }
+
+        .play-pause-button:disabled svg {
+            fill: gray;
+        }
+
+        /* Stili dei bottoni di navigazione (Precedente/Successivo) */
+        .nav-button {
+            width: 50px; /* Dimensioni dei bottoni di navigazione */
+            height: 50px;
+            border-radius: 50%; /* Circolare */
+            color: white; /* Colore delle icone bianco */
+            font-size: 2rem; /* Dimensione delle icone Material Symbols */
+            background: none; /* Sfondo trasparente */
+            box-shadow: none; /* Nessuna ombra */
+            border: 1px solid transparent; /* Bordo trasparente di default */
+        }
+
+        .nav-button:hover {
+            transform: scale(1.1); /* Ingrandimento all'hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Sfondo leggero all'hover */
+            color: white;
+            box-shadow: none; /* Nessuna ombra */
+            border-color: white; /* Bordo bianco all'hover */
+        }
+
+        /* Stili per il testo "traccia_00N" */
+        .track-info-text {
+            font-size: 1.2rem;
+            text-transform: lowercase; /* Assicura che il testo sia sempre in minuscolo */
+            color: white;
+            margin-top: 1.5rem; /* Spazio sopra il testo (tra controlli e testo) */
+            margin-bottom: 0; /* Nessun margine inferiore, gestito dal gap del container */
+            letter-spacing: 0.05em; /* Spaziatura tra le lettere */
+            font-weight: 400; /* Peso del font normale */
+            text-align: center;
+        }
+
+        /* Media queries per la responsività su schermi medi (es. tablet in verticale) */
+        @media (max-width: 768px) {
+            .player-container {
+                padding: 20px;
+                gap: 1.5rem;
+                width: 350px;
+            }
+
+            .planet-image-container {
+                width: 130px;
+                height: 130px;
+                margin-bottom: 2rem;
+            }
+
+            .play-pause-button {
+                width: 90px;
+                height: 90px;
+            }
+
+            .play-pause-button svg {
+                width: 45px;
+                height: 45px;
+            }
+
+            .nav-button {
+                width: 45px;
+                height: 45px;
+                font-size: 2rem;
+            }
+
+            .controls-wrapper {
+                gap: 1rem;
+            }
+
+            .track-info-text {
+                font-size: 1.1rem;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* Media queries per la responsività su schermi piccoli (es. smartphone) */
+        @media (max-width: 480px) {
+            .player-container {
+                padding: 15px;
+                gap: 1.2rem;
+                width: 90%;
+            }
+
+            .planet-image-container {
+                width: 110px;
+                height: 110px;
+                margin-bottom: 1.8rem;
+            }
+
+            .play-pause-button {
+                width: 80px;
+                height: 80px;
+            }
+
+            .play-pause-button svg {
+                width: 40px;
+                height: 40px;
+            }
+
+            .nav-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.8rem;
+            }
+
+            .controls-wrapper {
+                gap: 0.8rem;
+            }
+
+            .track-info-text {
+                font-size: 1rem;
+                margin-top: 1.2rem;
+                margin-bottom: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenitore principale del player audio -->
+    <div class="player-container">
+        <!-- Contenitore per l'immagine circolare del pianeta -->
+        <div class="planet-image-container">
+            <!-- L'attributo src verrà impostato dinamicamente dal JavaScript -->
+            <img src="" alt="Planet Image" id="planetImage">
+        </div>
+
+        <!-- Wrapper per i controlli di navigazione e riproduzione -->
+        <div class="controls-wrapper">
+            <!-- Bottone per tornare alla traccia precedente -->
+            <button id="prevBtn" class="nav-button">
+                <span class="material-symbols-outlined">skip_previous</span>
+            </button>
+
+            <!-- Centrale Play/Pausa button -->
+            <button id="toggleBtn" class="play-pause-button">
+                <!-- SVG icon that switches between play and pause -->
+                <svg id="icon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/> <!-- Initial play icon -->
+                </svg>
+            </button>
+
+            <!-- Bottone per passare alla traccia successiva -->
+            <button id="nextBtn" class="nav-button">
+                <span class="material-symbols-outlined">skip_next</span>
+            </button>
+        </div>
+
+        <!-- Testo che mostra il numero della traccia corrente (spostato sotto i controlli) -->
+        <p id="trackNumberDisplay" class="track-info-text"></p>
+
+        <!-- Elemento audio HTML5 -->
+        <audio id="myAudio" loop>
+            <!-- Le sorgenti audio verranno caricate dinamicamente da JavaScript -->
+            Il tuo browser non supporta l'audio.
+        </audio>
+    </div>
+
+    <script>
+        // References to DOM elements
+        const audio = document.getElementById('myAudio');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const icon = document.getElementById('icon');
+        const trackNumberDisplay = document.getElementById('trackNumberDisplay');
+        const planetImageContainer = document.querySelector('.planet-image-container');
+        const planetImage = document.getElementById('planetImage');
+
+        // Array delle tracce audio, con titolo e percorso del file
+        // AGGIORNATO: Percorsi ora puntano a assets/audio/ e assets/images/
+        const tracks = [
+            { title: 'traccia_001', src: 'assets/audio/tr-001.wav', planetImage: 'assets/images/plnt-001.jpg' }, // Blu
+            { title: 'traccia_002', src: 'assets/audio/tr-002.wav', planetImage: 'assets/images/plnt-002.jpg' }, // Rosso
+            { title: 'traccia_003', src: 'assets/audio/tr-003.wav', planetImage: 'assets/images/plnt-003.jpg' }  // Verde
+        ];
+
+        let currentTrackIndex = 0; // Indice della traccia attualmente in riproduzione
+
+        // Icone SVG per i stati Play e Pausa
+        const playIcon = `<path d="M8 5v14l11-7z"/>`;
+        const pauseIcon = `<path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/>`;
+
+        /**
+         * Carica una traccia audio specificata dall'indice nell'array `tracks`.
+         * Aggiorna il testo della traccia, l'immagine del pianeta e gestisce lo stato dei bottoni di navigazione.
+         * @param {number} index L'indice della traccia da caricare.
+         * @param {boolean} shouldPlayAfterLoad Se true, la traccia verrà riprodotta automaticamente dopo il caricamento.
+         */
+        function loadTrack(index, shouldPlayAfterLoad = false) {
+            // Se l'audio era in riproduzione, lo metto in pausa prima di cambiare traccia
+            if (!audio.paused) {
+                audio.pause();
+            }
+            icon.innerHTML = playIcon; // Reimposto l'icona su Play
+            planetImageContainer.style.animationPlayState = 'paused'; // Metti in pausa la rotazione
+
+            currentTrackIndex = index; // Aggiorno l'indice della traccia corrente
+            audio.src = tracks[currentTrackIndex].src; // Imposto la sorgente del file audio
+            planetImage.src = tracks[currentTrackIndex].planetImage; // Nuovo: Imposto l'immagine del pianeta
+
+            // --- DEBUG: Log dei percorsi che il browser cerca di caricare ---
+            console.log("Tentativo di caricare audio da:", audio.src);
+            console.log("Tentativo di caricare immagine da:", planetImage.src);
+            // --- FINE DEBUG ---
+
+            // Aggiorno il testo con il formato "traccia_00N", assicurando minuscolo
+            trackNumberDisplay.textContent = `traccia_00${currentTrackIndex + 1}`;
+            audio.load(); // Carica la nuova sorgente audio
+
+            // Event listener per gestire errori di caricamento del media (es. file non trovato)
+            audio.onerror = (e) => {
+                console.error("Errore di caricamento audio per la traccia:", tracks[currentTrackIndex].title, e);
+                trackNumberDisplay.textContent = `Errore: "${tracks[currentTrackIndex].title}" non trovata o non supportata.`;
+                toggleBtn.disabled = true; // Disabilita il pulsante Play/Pausa se c'è un errore
+                icon.innerHTML = playIcon; // Assicurati che l'icona sia Play
+                planetImageContainer.style.animationPlayState = 'paused'; // Ferma animazione
+            };
+
+            // Event listener per quando i metadati sono caricati (e il file è disponibile)
+            audio.onloadedmetadata = () => {
+                toggleBtn.disabled = false; // Abilita il pulsante Play/Pausa solo quando la traccia è caricata
+            };
+
+            // Se richiesto, riproduci la traccia dopo il caricamento
+            if (shouldPlayAfterLoad) {
+                audio.play()
+                    .then(() => {
+                        // Aggiorna l'interfaccia solo se la riproduzione è avvenuta con successo
+                        icon.innerHTML = pauseIcon;
+                        planetImageContainer.style.animationPlayState = 'running';
+                    })
+                    .catch(error => {
+                        console.error("Errore durante l'avvio della riproduzione (potrebbe essere dovuto a policy browser o sorgente):", error);
+                        // Assicurati che l'interfaccia rifletta lo stato di pausa se l'avvio fallisce
+                        icon.innerHTML = playIcon;
+                        planetImageContainer.style.animationPlayState = 'paused';
+                        // Non disabilitare il pulsante qui, l'utente dovrebbe poter riprovare manualmente
+                        // se l'errore è un "NotAllowedError" (autoplay bloccato).
+                    });
+            } else {
+                // Se non deve riprodurre automaticamente, assicurati che il pulsante sia abilitato
+                // una volta che i metadati sono caricati. Questo è ora gestito da audio.onloadedmetadata
+            }
+        }
+
+        // Event listener per il bottone Play/Pausa
+        toggleBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        icon.innerHTML = pauseIcon;
+                        planetImageContainer.style.animationPlayState = 'running';
+                    })
+                    .catch(error => {
+                        console.error("Errore durante l'avvio della riproduzione:", error);
+                        icon.innerHTML = playIcon;
+                        planetImageContainer.style.animationPlayState = 'paused';
+                    });
+            } else {
+                audio.pause();
+                icon.innerHTML = playIcon;
+                planetImageContainer.style.animationPlayState = 'paused';
+            }
+        });
+
+        // Event listener per il bottone 'Precedente'
+        prevBtn.addEventListener('click', () => {
+            let newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            loadTrack(newIndex, false); 
+        });
+
+        // Event listener per il bottone 'Successivo'
+        nextBtn.addEventListener('click', () => {
+            let newIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack(newIndex, false); 
+        });
+
+        // Event listener: quando una traccia finisce (loop continuo)
+        audio.addEventListener('ended', () => {
+            let nextIndex = (currentTrackIndex + 1) % tracks.length; 
+            loadTrack(nextIndex, true); 
+        });
+
+        // Inizializza il player con la prima traccia al caricamento della pagina
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTrack(currentTrackIndex, false); 
+        });
+    </script>
+</body>
+</html>
