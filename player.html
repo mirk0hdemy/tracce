@@ -24,7 +24,7 @@
             font-family: 'Orbit', sans-serif; /* Utilizzo del font Orbit */
             display: flex;
             flex-direction: column; /* Default: layout a colonna per centraggio generale */
-            justify-content: center; /* Centra verticalmente il contenuto */
+            justify-content: center; /* Centra verticalmente il contenuto (default per desktop) */
             align-items: center; /* Centra orizzontalmente il contenuto */
             height: 100vh; /* Il body occupa l'intera altezza della viewport */
             margin: 0;
@@ -255,6 +255,7 @@
         /* --- DESKTOP STYLES (min-width: 769px) --- */
         @media (min-width: 769px) {
             body {
+                justify-content: center; /* Mantiene il centraggio verticale per il body su desktop */
                 flex-direction: column;
             }
 
@@ -268,6 +269,7 @@
                 height: 80vh; /* Altezza fissa per lasciare spazio sopra/sotto */
                 max-height: 80vh; /* Assicura che non superi l'80% dell'altezza della viewport */
                 padding: 0;
+                margin-top: 0; /* Assicura che non ci sia un margin-top indesiderato da mobile */
             }
 
             .planet-image-container {
@@ -306,9 +308,14 @@
 
         /* Media queries per la responsività su schermi medi (es. tablet in verticale) */
         @media (max-width: 768px) {
+            body {
+                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto */
+            }
             .main-content {
                 width: min(90vw, 475px);
                 gap: 1rem;
+                margin-top: 20vh; /* MODIFICATO: Sposta il contenuto del 20% dal top */
+                max-height: calc(80vh - 40px); /* MODIFICATO: Limita l'altezza per evitare scroll (100vh - 20vh margin - 40px body padding) */
             }
 
             .planet-image-container {
@@ -346,9 +353,14 @@
 
         /* Media queries per la responsività su schermi piccoli (es. smartphone) */
         @media (max-width: 480px) {
+            body {
+                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto */
+            }
             .main-content {
                 width: min(95vw, 400px);
                 gap: 0.8rem;
+                margin-top: 20vh; /* MODIFICATO: Sposta il contenuto del 20% dal top */
+                max-height: calc(80vh - 40px); /* MODIFICATO: Limita l'altezza per evitare scroll (100vh - 20vh margin - 40px body padding) */
             }
 
             .planet-image-container {
