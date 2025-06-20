@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>TRACCE</title>
+    <title>TRACCE - Benvenuto</title>
     <link rel="icon" type="image/png" href="assets/images/saturn-icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -34,7 +34,8 @@
         /* Stili del titolo */
         .main-title {
             font-family: 'Orbit', sans-serif;
-            font-size: 4rem; /* Dimensione del font per il titolo */
+            font-size: 4rem; /* Dimensione del font per il titolo (desktop) */
+            text-transform: uppercase; /* Reso MAIUSCOLO come richiesto */
             color: white;
             margin-bottom: 2rem; /* Spazio sotto il titolo */
             letter-spacing: 0.1em; /* Spaziatura tra le lettere */
@@ -48,10 +49,11 @@
             color: white;
             border: 1px solid white; /* Bordino bianco 1px */
             padding: 15px 30px; /* Padding interno */
-            border-radius: 48px; /* Angoli leggermente arrotondati */
+            border-radius: 48px; /* Mantenuto il tuo border-radius di 48px */
             font-size: 1.5rem;
             cursor: pointer;
             transition: background-color 0.2s ease, transform 0.2s ease; /* Transizione per hover */
+            /* text-transform: uppercase; <--- Rimosso, il testo sarà come scritto nell'HTML */
             letter-spacing: 0.05em;
         }
 
@@ -63,23 +65,23 @@
         /* Media queries per la responsività */
         @media (max-width: 768px) {
             .main-title {
-                font-size: 3rem;
-                margin-bottom: 1.5rem;
+                font-size: 3.5rem; /* Reso più grande per tablet */
+                margin-bottom: 1.8rem; /* Aggiustato lo spazio */
             }
             .explore-button {
-                font-size: 1.2rem;
-                padding: 12px 25px;
+                font-size: 1.5rem; /* Reso più grande per tablet */
+                padding: 15px 30px; /* Mantenuto il padding per un bottone più grande */
             }
         }
 
         @media (max-width: 480px) {
             .main-title {
-                font-size: 2.5rem;
-                margin-bottom: 1rem;
+                font-size: 3rem; /* Reso più grande per smartphone */
+                margin-bottom: 1.5rem; /* Aggiustato lo spazio */
             }
             .explore-button {
-                font-size: 1rem;
-                padding: 10px 20px;
+                font-size: 1.2rem; /* Reso più grande per smartphone */
+                padding: 12px 25px; /* Aumentato il padding per un bottone più grande */
             }
         }
     </style>
