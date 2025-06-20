@@ -45,6 +45,7 @@
             height: auto; /* Altezza adattiva per mobile */
             max-height: calc(100vh - 40px); /* Limita l'altezza su mobile per prevenire scroll (100vh - padding body) */
             padding: 0;
+            margin-top: 0; /* Assicura che non ci sia un margin-top indesiderato da mobile */
         }
 
         /* Area di visualizzazione del pianeta */
@@ -309,24 +310,24 @@
         /* Media queries per la responsività su schermi medi (es. tablet in verticale) */
         @media (max-width: 768px) {
             body {
-                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto */
+                justify-content: center; /* Riporta al centraggio verticale per il body su mobile */
             }
             .main-content {
                 width: min(90vw, 475px);
                 gap: 1rem;
-                margin-top: 20vh; /* MODIFICATO: Sposta il contenuto del 20% dal top */
-                max-height: calc(80vh - 40px); /* MODIFICATO: Limita l'altezza per evitare scroll (100vh - 20vh margin - 40px body padding) */
+                margin-top: 0; /* Rimuovi il margin-top fisso */
+                max-height: calc(100vh - 40px); /* Regola altezza massima per evitare scroll */
+            }
+
+            .player-controls-and-info {
+                margin-top: -10vh; /* MODIFICATO: Sposta il player e info 10% dell'altezza della viewport più in alto */
+                gap: 1rem;
             }
 
             .planet-image-container {
                 width: min(90vw, 475px);
                 height: min(90vw, 475px);
             }
-
-            .player-controls-and-info {
-                gap: 1rem;
-            }
-
             /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
 
             /* Rimuove gli effetti hover/active su tutti i bottoni sui dispositivi touch tranne play/pausa */
@@ -354,22 +355,23 @@
         /* Media queries per la responsività su schermi piccoli (es. smartphone) */
         @media (max-width: 480px) {
             body {
-                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto */
+                justify-content: center; /* Riporta al centraggio verticale per il body su mobile */
             }
             .main-content {
                 width: min(95vw, 400px);
                 gap: 0.8rem;
-                margin-top: 20vh; /* MODIFICATO: Sposta il contenuto del 20% dal top */
-                max-height: calc(80vh - 40px); /* MODIFICATO: Limita l'altezza per evitare scroll (100vh - 20vh margin - 40px body padding) */
+                margin-top: 0; /* Rimuovi il margin-top fisso */
+                max-height: calc(100vh - 40px); /* Regola altezza massima per evitare scroll */
+            }
+
+            .player-controls-and-info {
+                margin-top: -10vh; /* MODIFICATO: Sposta il player e info 10% dell'altezza della viewport più in alto */
+                gap: 0.8rem;
             }
 
             .planet-image-container {
                 width: min(95vw, 400px);
                 height: min(95vw, 400px);
-            }
-
-            .player-controls-and-info {
-                gap: 0.8rem;
             }
             
             /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
