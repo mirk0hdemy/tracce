@@ -49,6 +49,7 @@
 
         /* Stili del contenitore dell'immagine del pianeta */
         .planet-image-container {
+            position: relative; /* Aggiunto per il posizionamento assoluto del cerchio */
             width: 350px; /* Aumentato ulteriormente per desktop */
             height: 350px; /* Aumentato ulteriormente per desktop */
             border-radius: 50%; /* Rende l'immagine circolare */
@@ -64,8 +65,18 @@
             animation-play-state: paused; /* Inizia con l'animazione in pausa */
         }
 
-        /* Rimosso: Stili per il pianeta specifico plnt-002.jpg */
-        /* .planet-002-specific-size { ... } */
+        /* Stili del cerchio nero centrale (foro del CD) */
+        .cd-hole {
+            position: absolute;
+            width: 25px; /* Dimensione del cerchio */
+            height: 25px; /* Dimensione del cerchio */
+            background-color: black; /* Colore nero */
+            border-radius: 50%; /* Rende il div un cerchio */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centra il cerchio perfettamente */
+            z-index: 10; /* Assicura che sia sopra l'immagine */
+        }
 
         /* Stili dell'immagine del pianeta */
         #planetImage {
@@ -188,9 +199,6 @@
                 margin-bottom: 2rem;
             }
 
-            /* Rimosso: Dimensioni specifiche per pianeta 2 su tablet */
-            /* .planet-002-specific-size { ... } */
-
             .play-pause-button {
                 width: 70px; /* Invariato */
                 height: 70px; /* Invariato */
@@ -246,9 +254,6 @@
                 margin-bottom: 1.8rem;
             }
 
-            /* Rimosso: Dimensioni specifiche per pianeta 2 su smartphone */
-            /* .planet-002-specific-size { ... } */
-
             .play-pause-button {
                 width: 60px; /* Invariato */
                 height: 60px; /* Invariato */
@@ -299,6 +304,8 @@
         <div class="planet-image-container">
             <!-- L'attributo src verrà impostato dinamicamente dal JavaScript -->
             <img src="" alt="Planet Image" id="planetImage">
+            <!-- Nuovo elemento: il cerchio nero centrale -->
+            <div class="cd-hole"></div>
         </div>
 
         <!-- Wrapper per i controlli di navigazione e riproduzione -->
@@ -374,12 +381,6 @@
             currentTrackIndex = index; // Aggiorno l'indice della traccia corrente
             audio.src = tracks[currentTrackIndex].src; // Imposto la sorgente del file audio
             planetImage.src = tracks[currentTrackIndex].planetImage; // Nuovo: Imposto l'immagine del pianeta
-
-            // Rimosso: Logica per la classe specifica del pianeta 002
-            // planetImageContainer.classList.remove('planet-002-specific-size');
-            // if (currentTrackIndex === 1) {
-            //     planetImageContainer.classList.add('planet-002-specific-size');
-            // }
 
             // --- DEBUG: Log dei percorsi che il browser cerca di caricare ---
             console.log("Tentativo di caricare audio da:", audio.src);
