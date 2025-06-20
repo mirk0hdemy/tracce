@@ -45,7 +45,7 @@
             background-color: black; /* Nessuno sfondo aggiuntivo */
             box-shadow: none; /* Nessuna ombra, come richiesto */
             max-width: 90%; /* Limita la larghezza massima a 90% dello schermo (utile su schermi molto larghi) */
-            width: 400px; /* Larghezza predefinita per desktop */
+            width: min(90vw, 400px); /* MODIFICATO: Si adatta alla viewport, ma non più di 400px */
         }
 
         /* Wrapper per il contenitore del pianeta (lo lascio per coerenza di spaziatura verticale) */
@@ -58,8 +58,8 @@
         /* Stili per il contenitore dell'immagine del pianeta */
         .planet-image-container {
             position: relative; /* Aggiunto per il posizionamento assoluto del cerchio */
-            width: 350px; /* Aumentato ulteriormente per desktop */
-            height: 350px; /* Aumentato ulteriormente per desktop */
+            width: min(80vw, 350px); /* MODIFICATO: Si adatta alla viewport (max 80vw) e non più di 350px */
+            height: min(80vw, 350px); /* MODIFICATO: Mantiene l'aspetto quadrato/circolare */
             border-radius: 50%; /* Rende l'immagine circolare */
             overflow: hidden; /* Nasconde ciò che eccede la forma circolare */
             display: flex; /* Per centrare l'immagine all'interno del contenitore */
@@ -122,7 +122,7 @@
             align-items: center;
             justify-content: center; /* Centra i bottoni orizzontalmente */
             gap: 1.2rem; /* Spazio tra i bottoni di controllo, in unità relative */
-            margin-top: 3rem; /* Avvicinato al pianeta (da 150px a 3rem) */
+            margin-top: 3rem; /* Avvicinato al pianeta */
         }
 
         /* Stile base per tutti i bottoni del player */
@@ -195,11 +195,11 @@
         .nav-button:hover,
         .shuffle-button:hover,
         .loop-button:hover {
-            transform: scale(1.1); /* Enlargement on hover */
-            background-color: rgba(255, 255, 255, 0.1); /* Light background on hover */
+            transform: scale(1.1); /* Ingrandimento all'hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Sfondo leggero all'hover */
             color: white;
             box-shadow: none; 
-            border-color: white; /* White border on hover */
+            border-color: white; /* Bordo bianco all'hover */
         }
 
         /* Stili specifici per il pallino di attivazione (shuffle e loop) */
@@ -252,12 +252,12 @@
             .player-container {
                 padding: 20px;
                 gap: 1.5rem;
-                width: 350px;
+                width: min(90vw, 350px); /* MODIFICATO: Adattamento per tablet */
             }
 
             .planet-image-container {
-                width: 380px; 
-                height: 380px; 
+                width: min(80vw, 380px); /* MODIFICATO: Scala per adattarsi meglio, max 380px */
+                height: min(80vw, 380px); /* MODIFICATO: Scala per adattarsi meglio, max 380px */
             }
 
             .controls-wrapper {
@@ -311,12 +311,12 @@
             .player-container {
                 padding: 15px;
                 gap: 1.2rem;
-                width: 95%; 
+                width: min(95vw, 320px); /* MODIFICATO: Adattamento per smartphone */
             }
 
             .planet-image-container {
-                width: 320px; 
-                height: 320px; 
+                width: min(85vw, 320px); /* MODIFICATO: Scala per adattarsi meglio, max 320px */
+                height: min(85vw, 320px); /* MODIFICATO: Scala per adattarsi meglio, max 320px */
             }
 
             .controls-wrapper {
