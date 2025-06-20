@@ -62,14 +62,17 @@
             
             /* Applica l'animazione di rotazione qui, inizialmente in pausa */
             animation: rotate360 20s linear infinite;
-            animation-play-state: paused; /* Inizia con l'animazione in pausa */
+            animation-play-state: paused;
+
+            /* Nuovo: Sfondo blu come placeholder */
+            background: radial-gradient(circle at center, #00008B 0%, #00005C 100%); /* Sfumatura di blu scuro */
         }
 
         /* Stili del cerchio nero centrale (foro del CD) */
         .cd-hole {
             position: absolute;
-            width: 25px; /* Modificato da 30px a 25px */
-            height: 25px; /* Modificato da 30px a 25px */
+            width: 25px; /* Dimensione del foro */
+            height: 25px; /* Dimensione del foro */
             background-color: black; /* Colore nero */
             border-radius: 50%; /* Rende il div un cerchio */
             top: 50%;
@@ -81,8 +84,8 @@
         /* Nuovo stile per il cerchio con bordo */
         .cd-ring {
             position: absolute;
-            width: 100px; /* Modificato da 50px a 100px */
-            height: 100px; /* Modificato da 50px a 100px */
+            width: 75px; /* Modificato a 75px */
+            height: 75px; /* Modificato a 75px */
             background: none; /* Nessuno sfondo */
             border: 2px solid black; /* Bordo di 2px nero */
             border-radius: 50%; /* Rende il div un cerchio */
