@@ -49,8 +49,8 @@
 
         /* Stili del contenitore dell'immagine del pianeta */
         .planet-image-container {
-            width: 300px; /* Aumentato da 150px a 300px (200%) */
-            height: 300px; /* Aumentato da 150px a 300px (200%) */
+            width: 350px; /* Aumentato ulteriormente per desktop */
+            height: 350px; /* Aumentato ulteriormente per desktop */
             border-radius: 50%; /* Rende l'immagine circolare */
             overflow: hidden; /* Nasconde ciò che eccede la forma circolare */
             margin-bottom: 2.5rem; /* Aumentato lo spazio sotto l'immagine per distanziarla dal player */
@@ -63,6 +63,9 @@
             animation: rotate360 20s linear infinite;
             animation-play-state: paused; /* Inizia con l'animazione in pausa */
         }
+
+        /* Rimosso: Stili per il pianeta specifico plnt-002.jpg */
+        /* .planet-002-specific-size { ... } */
 
         /* Stili dell'immagine del pianeta */
         #planetImage {
@@ -107,8 +110,8 @@
 
         /* Stili del bottone Play/Pausa */
         .play-pause-button {
-            width: 80px; /* Ridotto da 100px per bilanciare le dimensioni */
-            height: 80px; /* Ridotto da 100px per bilanciare le dimensioni */
+            width: 80px; /* Invariato */
+            height: 80px; /* Invariato */
             border-radius: 50%; /* Circolare */
             border: 1px solid white; /* Bordo bianco sottile */
             background: none; /* Sfondo trasparente */
@@ -122,8 +125,8 @@
         }
 
         .play-pause-button svg {
-            width: 40px; /* Ridotto da 50px */
-            height: 40px; /* Ridotto da 50px */
+            width: 40px; /* Invariato */
+            height: 40px; /* Invariato */
             fill: white; /* Colore dell'icona bianco */
         }
 
@@ -141,11 +144,11 @@
 
         /* Stili dei bottoni di navigazione (Precedente/Successivo) */
         .nav-button {
-            width: 40px; /* Ridotto da 50px */
-            height: 40px; /* Ridotto da 50px */
+            width: 40px; /* Invariato */
+            height: 40px; /* Invariato */
             border-radius: 50%; /* Circolare */
             color: white; /* Colore delle icone bianco */
-            font-size: 1.8rem; /* Ridotto da 2rem */
+            font-size: 1.8rem; /* Invariato */
             background: none; /* Sfondo trasparente */
             box-shadow: none; /* Nessuna ombra */
             border: 1px solid transparent; /* Bordo trasparente di default */
@@ -180,10 +183,13 @@
             }
 
             .planet-image-container {
-                width: 320px; /* Aumentato per schermi medi per mantenerlo più grande */
-                height: 320px; /* Aumentato per schermi medi per mantenerlo più grande */
+                width: 380px; /* Aumentato per schermi medi per mantenerlo molto più grande */
+                height: 380px; /* Aumentato per schermi medi per mantenerlo molto più grande */
                 margin-bottom: 2rem;
             }
+
+            /* Rimosso: Dimensioni specifiche per pianeta 2 su tablet */
+            /* .planet-002-specific-size { ... } */
 
             .play-pause-button {
                 width: 70px; /* Invariato */
@@ -235,10 +241,13 @@
             }
 
             .planet-image-container {
-                width: 280px; /* Aumentato per schermi piccoli per mantenerlo grande */
-                height: 280px; /* Aumentato per schermi piccoli per mantenerlo grande */
+                width: 320px; /* Aumentato per schermi piccoli per mantenerlo molto più grande */
+                height: 320px; /* Aumentato per schermi piccoli per mantenerlo molto più grande */
                 margin-bottom: 1.8rem;
             }
+
+            /* Rimosso: Dimensioni specifiche per pianeta 2 su smartphone */
+            /* .planet-002-specific-size { ... } */
 
             .play-pause-button {
                 width: 60px; /* Invariato */
@@ -365,6 +374,12 @@
             currentTrackIndex = index; // Aggiorno l'indice della traccia corrente
             audio.src = tracks[currentTrackIndex].src; // Imposto la sorgente del file audio
             planetImage.src = tracks[currentTrackIndex].planetImage; // Nuovo: Imposto l'immagine del pianeta
+
+            // Rimosso: Logica per la classe specifica del pianeta 002
+            // planetImageContainer.classList.remove('planet-002-specific-size');
+            // if (currentTrackIndex === 1) {
+            //     planetImageContainer.classList.add('planet-002-specific-size');
+            // }
 
             // --- DEBUG: Log dei percorsi che il browser cerca di caricare ---
             console.log("Tentativo di caricare audio da:", audio.src);
