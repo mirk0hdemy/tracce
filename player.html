@@ -180,8 +180,8 @@
             }
 
             .planet-image-container {
-                width: 280px; /* Aumentato per schermi medi per mantenerlo più grande */
-                height: 280px; /* Aumentato per schermi medi per mantenerlo più grande */
+                width: 320px; /* Aumentato per schermi medi per mantenerlo più grande */
+                height: 320px; /* Aumentato per schermi medi per mantenerlo più grande */
                 margin-bottom: 2rem;
             }
 
@@ -200,6 +200,30 @@
                 height: 35px; /* Invariato */
                 font-size: 1.6rem; /* Invariato */
             }
+
+            /* Rimuove gli effetti hover sui dispositivi touch */
+            .play-pause-button:hover {
+                transform: scale(1); /* Reset dell'ingrandimento all'hover */
+                background-color: transparent; /* Reset dello sfondo all'hover */
+                box-shadow: none; /* Reset dell'ombra */
+            }
+
+            .nav-button:hover {
+                transform: scale(1); /* Reset dell'ingrandimento all'hover */
+                background-color: transparent; /* Reset dello sfondo all'hover */
+                color: white; /* Assicura che il colore dell'icona rimanga bianco */
+                box-shadow: none; /* Reset dell'ombra */
+                border-color: transparent; /* Reset del bordo all'hover */
+            }
+            /* Garantisce che lo stato "active" non aggiunga bordi o sfondi persistenti */
+            .play-pause-button:active {
+                background-color: transparent;
+                border-color: white; /* Mantiene il bordo bianco al click */
+            }
+            .nav-button:active {
+                background-color: transparent;
+                border-color: white; /* Mantiene il bordo bianco al click */
+            }
         }
 
         /* Media queries per la responsività su schermi piccoli (es. smartphone) */
@@ -211,8 +235,8 @@
             }
 
             .planet-image-container {
-                width: 250px; /* Aumentato per schermi piccoli per mantenerlo grande */
-                height: 250px; /* Aumentato per schermi piccoli per mantenerlo grande */
+                width: 280px; /* Aumentato per schermi piccoli per mantenerlo grande */
+                height: 280px; /* Aumentato per schermi piccoli per mantenerlo grande */
                 margin-bottom: 1.8rem;
             }
 
@@ -230,6 +254,30 @@
                 width: 30px; /* Invariato */
                 height: 30px; /* Invariato */
                 font-size: 1.4rem; /* Invariato */
+            }
+
+            /* Rimuove gli effetti hover sui dispositivi touch */
+            .play-pause-button:hover {
+                transform: scale(1); /* Reset dell'ingrandimento all'hover */
+                background-color: transparent; /* Reset dello sfondo all'hover */
+                box-shadow: none; /* Reset dell'ombra */
+            }
+
+            .nav-button:hover {
+                transform: scale(1); /* Reset dell'ingrandimento all'hover */
+                background-color: transparent; /* Reset dello sfondo all'hover */
+                color: white; /* Assicura che il colore dell'icona rimanga bianco */
+                box-shadow: none; /* Reset dell'ombra */
+                border-color: transparent; /* Reset del bordo all'hover */
+            }
+            /* Garantisce che lo stato "active" non aggiunga bordi o sfondi persistenti */
+            .play-pause-button:active {
+                background-color: transparent;
+                border-color: white; /* Mantiene il bordo bianco al click */
+            }
+            .nav-button:active {
+                background-color: transparent;
+                border-color: white; /* Mantiene il bordo bianco al click */
             }
         }
     </style>
