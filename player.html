@@ -49,8 +49,8 @@
 
         /* Stili del contenitore dell'immagine del pianeta */
         .planet-image-container {
-            width: 150px;
-            height: 150px;
+            width: 300px; /* Aumentato da 150px a 300px (200%) */
+            height: 300px; /* Aumentato da 150px a 300px (200%) */
             border-radius: 50%; /* Rende l'immagine circolare */
             overflow: hidden; /* Nasconde ciò che eccede la forma circolare */
             margin-bottom: 2.5rem; /* Aumentato lo spazio sotto l'immagine per distanziarla dal player */
@@ -107,8 +107,8 @@
 
         /* Stili del bottone Play/Pausa */
         .play-pause-button {
-            width: 100px;
-            height: 100px;
+            width: 80px; /* Ridotto da 100px per bilanciare le dimensioni */
+            height: 80px; /* Ridotto da 100px per bilanciare le dimensioni */
             border-radius: 50%; /* Circolare */
             border: 1px solid white; /* Bordo bianco sottile */
             background: none; /* Sfondo trasparente */
@@ -122,8 +122,8 @@
         }
 
         .play-pause-button svg {
-            width: 50px; /* Dimensione dell'icona */
-            height: 50px;
+            width: 40px; /* Ridotto da 50px */
+            height: 40px; /* Ridotto da 50px */
             fill: white; /* Colore dell'icona bianco */
         }
 
@@ -141,11 +141,11 @@
 
         /* Stili dei bottoni di navigazione (Precedente/Successivo) */
         .nav-button {
-            width: 50px; /* Dimensioni dei bottoni di navigazione */
-            height: 50px;
+            width: 40px; /* Ridotto da 50px */
+            height: 40px; /* Ridotto da 50px */
             border-radius: 50%; /* Circolare */
             color: white; /* Colore delle icone bianco */
-            font-size: 2rem; /* Dimensione delle icone Material Symbols */
+            font-size: 1.8rem; /* Ridotto da 2rem */
             background: none; /* Sfondo trasparente */
             box-shadow: none; /* Nessuna ombra */
             border: 1px solid transparent; /* Bordo trasparente di default */
@@ -180,35 +180,25 @@
             }
 
             .planet-image-container {
-                width: 130px;
-                height: 130px;
+                width: 280px; /* Aumentato per schermi medi per mantenerlo più grande */
+                height: 280px; /* Aumentato per schermi medi per mantenerlo più grande */
                 margin-bottom: 2rem;
             }
 
             .play-pause-button {
-                width: 90px;
-                height: 90px;
+                width: 70px; /* Invariato */
+                height: 70px; /* Invariato */
             }
 
             .play-pause-button svg {
-                width: 45px;
-                height: 45px;
+                width: 35px; /* Invariato */
+                height: 35px; /* Invariato */
             }
 
             .nav-button {
-                width: 45px;
-                height: 45px;
-                font-size: 2rem;
-            }
-
-            .controls-wrapper {
-                gap: 1rem;
-            }
-
-            .track-info-text {
-                font-size: 1.1rem;
-                margin-top: 1.5rem;
-                margin-bottom: 1.5rem;
+                width: 35px; /* Invariato */
+                height: 35px; /* Invariato */
+                font-size: 1.6rem; /* Invariato */
             }
         }
 
@@ -217,39 +207,29 @@
             .player-container {
                 padding: 15px;
                 gap: 1.2rem;
-                width: 90%;
+                width: 95%; /* Leggermente aumentato la larghezza massima per sfruttare lo spazio */
             }
 
             .planet-image-container {
-                width: 110px;
-                height: 110px;
+                width: 250px; /* Aumentato per schermi piccoli per mantenerlo grande */
+                height: 250px; /* Aumentato per schermi piccoli per mantenerlo grande */
                 margin-bottom: 1.8rem;
             }
 
             .play-pause-button {
-                width: 80px;
-                height: 80px;
+                width: 60px; /* Invariato */
+                height: 60px; /* Invariato */
             }
 
             .play-pause-button svg {
-                width: 40px;
-                height: 40px;
+                width: 30px; /* Invariato */
+                height: 30px; /* Invariato */
             }
 
             .nav-button {
-                width: 40px;
-                height: 40px;
-                font-size: 1.8rem;
-            }
-
-            .controls-wrapper {
-                gap: 0.8rem;
-            }
-
-            .track-info-text {
-                font-size: 1rem;
-                margin-top: 1.2rem;
-                margin-bottom: 1.2rem;
+                width: 30px; /* Invariato */
+                height: 30px; /* Invariato */
+                font-size: 1.4rem; /* Invariato */
             }
         }
     </style>
