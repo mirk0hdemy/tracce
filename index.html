@@ -272,7 +272,7 @@
             </button>
 
             <!-- Centrale Play/Pausa button -->
-            <button id="toggleBtn" class="play-pause-button" disabled>
+            <button id="toggleBtn" class="play-pause-button">
                 <!-- SVG icon that switches between play and pause -->
                 <svg id="icon" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/> <!-- Initial play icon -->
@@ -337,62 +337,93 @@
             currentTrackIndex = index; // Aggiorno l'indice della traccia corrente
             audio.src = tracks[currentTrackIndex].src; // Imposto la sorgente del file audio
             planetImage.src = tracks[currentTrackIndex].planetImage; // Nuovo: Imposto l'immagine del pianeta
+
+            // --- DEBUG: Log dei percorsi che il browser cerca di caricare ---
+            console.log("Tentativo di caricare audio da:", audio.src);
+            console.log("Tentativo di caricare immagine da:", planetImage.src);
+            // --- FINE DEBUG ---
+
             // Aggiorno il testo con il formato "traccia_00N", assicurando minuscolo
             trackNumberDisplay.textContent = `traccia_00${currentTrackIndex + 1}`;
             audio.load(); // Carica la nuova sorgente audio
 
+            // Event listener per gestire errori di caricamento del media (es. file non trovato)
+            audio.onerror = (e) => {
+                console.error("Errore di caricamento audio per la traccia:", tracks[currentTrackIndex].title, e);
+                trackNumberDisplay.textContent = `Errore: "${tracks[currentTrackIndex].title}" non trovata o non supportata.`;
+                toggleBtn.disabled = true; // Disabilita il pulsante Play/Pausa se c'è un errore
+                icon.innerHTML = playIcon; // Assicurati che l'icona sia Play
+                planetImageContainer.style.animationPlayState = 'paused'; // Ferma animazione
+            };
+
+            // Event listener per quando i metadati sono caricati (e il file è disponibile)
+            audio.onloadedmetadata = () => {
+                toggleBtn.disabled = false; // Abilita il pulsante Play/Pausa solo quando la traccia è caricata
+            };
+
             // Se richiesto, riproduci la traccia dopo il caricamento
             if (shouldPlayAfterLoad) {
-                audio.play();
-                icon.innerHTML = pauseIcon;
-                planetImageContainer.style.animationPlayState = 'running'; // Riprende la rotazione
+                audio.play()
+                    .then(() => {
+                        // Aggiorna l'interfaccia solo se la riproduzione è avvenuta con successo
+                        icon.innerHTML = pauseIcon;
+                        planetImageContainer.style.animationPlayState = 'running';
+                    })
+                    .catch(error => {
+                        console.error("Errore durante l'avvio della riproduzione (potrebbe essere dovuto a policy browser o sorgente):", error);
+                        // Assicurati che l'interfaccia rifletta lo stato di pausa se l'avvio fallisce
+                        icon.innerHTML = playIcon;
+                        planetImageContainer.style.animationPlayState = 'paused';
+                        // Non disabilitare il pulsante qui, l'utente dovrebbe poter riprovare manualmente
+                        // se l'errore è un "NotAllowedError" (autoplay bloccato).
+                    });
+            } else {
+                // Se non deve riprodurre automaticamente, assicurati che il pulsante sia abilitato
+                // una volta che i metadati sono caricati. Questo è ora gestito da audio.onloadedmetadata
             }
         }
-
-        // Event listener: quando i metadati dell'audio sono caricati (durata, ecc.)
-        audio.addEventListener('loadedmetadata', () => {
-            toggleBtn.disabled = false; // Abilita il bottone Play/Pausa
-        });
 
         // Event listener per il bottone Play/Pausa
         toggleBtn.addEventListener('click', () => {
             if (audio.paused) {
-                audio.play(); // Avvia la riproduzione
-                icon.innerHTML = pauseIcon; // Cambia icona a Pausa
-                planetImageContainer.style.animationPlayState = 'running'; // Riprende la rotazione
+                audio.play()
+                    .then(() => {
+                        icon.innerHTML = pauseIcon;
+                        planetImageContainer.style.animationPlayState = 'running';
+                    })
+                    .catch(error => {
+                        console.error("Errore durante l'avvio della riproduzione:", error);
+                        icon.innerHTML = playIcon;
+                        planetImageContainer.style.animationPlayState = 'paused';
+                    });
             } else {
-                audio.pause(); // Metti in pausa la riproduzione
-                icon.innerHTML = playIcon; // Cambia icona a Play
-                planetImageContainer.style.animationPlayState = 'paused'; // Metti in pausa la rotazione senza resettarla
+                audio.pause();
+                icon.innerHTML = playIcon;
+                planetImageContainer.style.animationPlayState = 'paused';
             }
         });
 
         // Event listener per il bottone 'Precedente'
         prevBtn.addEventListener('click', () => {
-            // Calcola l'indice precedente con la navigazione circolare
             let newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            // Carica la traccia, ma NON la riprodurre automaticamente
             loadTrack(newIndex, false); 
         });
 
         // Event listener per il bottone 'Successivo'
         nextBtn.addEventListener('click', () => {
-            // Calcola l'indice successivo con la navigazione circolare
             let newIndex = (currentTrackIndex + 1) % tracks.length;
-            // Carica la traccia, ma NON la riprodurre automaticamente
             loadTrack(newIndex, false); 
         });
 
         // Event listener: quando una traccia finisce (loop continuo)
         audio.addEventListener('ended', () => {
-            let nextIndex = (currentTrackIndex + 1) % tracks.length; // Usa modulo per loop continuo
-            loadTrack(nextIndex, true); // Carica la traccia successiva (o la prima) e riproduci
+            let nextIndex = (currentTrackIndex + 1) % tracks.length; 
+            loadTrack(nextIndex, true); 
         });
 
         // Inizializza il player con la prima traccia al caricamento della pagina
         document.addEventListener('DOMContentLoaded', () => {
-            loadTrack(currentTrackIndex, false); // Carica la prima traccia, ma non avviare automaticamente la riproduzione
-            // La rotazione è già in pausa per default nel CSS, quindi non serve rimuovere la classe qui.
+            loadTrack(currentTrackIndex, false); 
         });
     </script>
 </body>
