@@ -28,7 +28,7 @@
             align-items: center; /* Centra orizzontalmente il contenuto */
             height: 100vh; /* Il body occupa l'intera altezza della viewport */
             margin: 0;
-            padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli */
+            padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli (solo desktop) */
             touch-action: manipulation; /* Migliora la reattività al tocco su touchscreens */
             overflow: hidden; /* Previene scrollbar indesiderate se il contenuto è più grande della viewport */
             position: relative;
@@ -53,6 +53,7 @@
             display: flex; /* Per centrare l'immagine del pianeta all'interno di quest'area */
             justify-content: center;
             align-items: center;
+            flex-shrink: 0; /* Impedisci che si restringa su mobile */
         }
 
         /* Stili per il contenitore dell'immagine del pianeta */
@@ -118,6 +119,8 @@
             flex-direction: column; /* Controlli e testo impilati verticalmente */
             align-items: center; /* Centra gli elementi all'interno di questa colonna */
             gap: 1.5rem; /* Spazio tra controls-wrapper e track-info-text */
+            flex-shrink: 0; /* Impedisci che si restringa su mobile */
+            flex-grow: 0; /* Impedisci che cresca oltre il necessario su mobile */
         }
 
         /* Contenitore per i bottoni di controllo */
@@ -256,6 +259,7 @@
             body {
                 justify-content: center; /* Mantiene il centraggio verticale per il body su desktop */
                 flex-direction: column;
+                padding: 20px; /* Ripristina il padding per desktop */
             }
 
             .main-content {
@@ -309,27 +313,30 @@
         /* Media queries per la responsività su schermi medi (es. tablet in verticale) */
         @media (max-width: 768px) {
             body {
-                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto per posizionamento preciso */
-                padding: 0; /* MODIFICATO: Rimuovi padding dal body per gestione interna */
+                justify-content: flex-start; /* Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* Rimuovi padding dal body per gestione interna */
             }
             .main-content {
                 width: min(90vw, 475px);
-                height: 100vh; /* MODIFICATO: Occupo tutta l'altezza per distribuire elementi */
-                max-height: 100vh; /* MODIFICATO: Previene lo scrolling verticale */
-                gap: 0; /* MODIFICATO: Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
-                padding-top: 12vh; /* MODIFICATO: Pianeta a 12% dal top */
-                padding-bottom: 10vh; /* MODIFICATO: Player a 10% dal bottom */
-                justify-content: space-between; /* MODIFICATO: Spingi elementi ai bordi del main-content */
+                height: 100vh; /* Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* Previene lo scrolling verticale */
+                gap: 0; /* Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* Pianeta a 12% dal top */
+                padding-bottom: 20vh; /* Player a 20% dal bottom */
+                justify-content: space-between; /* Spingi elementi ai bordi del main-content */
+                box-sizing: border-box; /* Assicura che padding sia incluso nell'altezza */
             }
 
             .planet-image-container {
-                width: min(90vw, 475px);
-                height: min(90vw, 475px);
+                /* Calcola dimensione massima in base allo spazio verticale disponibile (100vh - 12vh - 20vh = 68vh) */
+                width: min(90vw, 475px, calc(68vh * 0.8)); /* Larghezza: 90% della vw, max 475px, max 80% dello spazio verticale rimanente */
+                height: min(90vw, 475px, calc(68vh * 0.8)); /* Altezza: 90% della vw, max 475px, max 80% dello spazio verticale rimanente */
             }
 
             .player-controls-and-info {
                 margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
                 gap: 1rem;
+                max-height: calc(68vh * 0.2); /* Limita altezza a 20% dello spazio disponibile */
             }
 
             /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
@@ -359,27 +366,30 @@
         /* Media queries per la responsività su schermi piccoli (es. smartphone) */
         @media (max-width: 480px) {
             body {
-                justify-content: flex-start; /* MODIFICATO: Allinea il contenuto in alto per posizionamento preciso */
-                padding: 0; /* MODIFICATO: Rimuovi padding dal body per gestione interna */
+                justify-content: flex-start; /* Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* Rimuovi padding dal body per gestione interna */
             }
             .main-content {
                 width: min(95vw, 400px);
-                height: 100vh; /* MODIFICATO: Occupo tutta l'altezza per distribuire elementi */
-                max-height: 100vh; /* MODIFICATO: Previene lo scrolling verticale */
-                gap: 0; /* MODIFICATO: Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
-                padding-top: 12vh; /* MODIFICATO: Pianeta a 12% dal top */
-                padding-bottom: 10vh; /* MODIFICATO: Player a 10% dal bottom */
-                justify-content: space-between; /* MODIFICATO: Spingi elementi ai bordi del main-content */
+                height: 100vh; /* Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* Previene lo scrolling verticale */
+                gap: 0; /* Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* Pianeta a 12% dal top */
+                padding-bottom: 20vh; /* Player a 20% dal bottom */
+                justify-content: space-between; /* Spingi elementi ai bordi del main-content */
+                box-sizing: border-box; /* Assicura che padding sia incluso nell'altezza */
             }
 
             .planet-image-container {
-                width: min(95vw, 400px);
-                height: min(95vw, 400px);
+                /* Calcola dimensione massima in base allo spazio verticale disponibile (68vh) */
+                width: min(95vw, 400px, calc(68vh * 0.8));
+                height: min(95vw, 400px, calc(68vh * 0.8));
             }
             
             .player-controls-and-info {
                 margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
                 gap: 0.8rem;
+                max-height: calc(68vh * 0.2); /* Limita altezza a 20% dello spazio disponibile */
             }
 
             /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
