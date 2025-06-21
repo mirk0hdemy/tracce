@@ -74,15 +74,29 @@
 
         /* Stili del cerchio nero centrale (foro del CD) */
         .cd-hole {
-            position: absolute;
             width: 25px;
             height: 25px;
             background-color: black;
+            border-radius: 50%;
+            display: flex; /* Permette al link di occupare lo spazio */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Stili per il link del cerchio centrale */
+        .cd-hole-link {
+            position: absolute;
+            width: 25px; /* Deve avere la stessa dimensione del cd-hole */
+            height: 25px;
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
+            display: block; /* Assicura che il link sia un blocco e occupi lo spazio */
+            text-decoration: none; /* Rimuove la sottolineatura di default del link */
+            color: inherit; /* Mantiene il colore del testo genitore */
+            cursor: pointer; /* Indica che è cliccabile */
         }
 
         /* Nuovo stile per il cerchio con bordo */
@@ -426,7 +440,10 @@
         <div class="planet-display-area">
             <div class="planet-image-container">
                 <img src="" alt="" id="planetImage">
-                <div class="cd-hole"></div>
+                <!-- Aggiunto un link intorno al cerchio nero centrale -->
+                <a href="bonus.html" class="cd-hole-link">
+                    <div class="cd-hole"></div>
+                </a>
                 <div class="cd-ring"></div>
             </div>
         </div>
@@ -524,6 +541,7 @@
 
             currentTrackIndex = index;
             audio.src = tracks[currentTrackIndex].src;
+            // Imposta l'immagine del pianeta dal percorso definito nell'array tracks
             planetImage.src = tracks[currentTrackIndex].planetImage;
 
             console.log("Tentativo di caricare audio da:", audio.src);
