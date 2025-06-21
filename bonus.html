@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>BONUS TRACCE</title>
+    <!-- Icona del sito -->
+    <link rel="icon" type="image/png" href="assets/images/saturn-icon.png">
+    <!-- Meta tag per la responsività, essenziale per adattare il contenuto alla larghezza del dispositivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Material Symbols per le icone e Font Orbit per il testo -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&family=Orbit&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Stili globali e reset per garantire una base pulita su tutti i browser */
+        * {
+            -webkit-tap-highlight-color: transparent; /* Rimuove l'evidenziazione al tocco su dispositivi mobili */
+            box-sizing: border-box; /* Include padding e border nella larghezza/altezza totale dell'elemento */
+        }
+
+        body {
+            background-color: black; /* Sfondo nero, come richiesto */
+            color: white; /* Colore del testo bianco */
+            font-family: 'Orbit', sans-serif; /* Utilizzo del font Orbit */
+            display: flex;
+            flex-direction: column; /* Default: layout a colonna per centraggio generale */
+            justify-content: center; /* Centra verticalmente il contenuto (default per desktop) */
+            align-items: center; /* Centra orizzontalmente il contenuto */
+            height: 100vh; /* Il body occupa l'intera altezza della viewport */
+            margin: 0;
+            padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli (solo desktop) */
+            touch-action: manipulation; /* Migliora la reattività al tocco su touchscreens */
+            overflow: hidden; /* Previene scrollbar indesiderate se il contenuto è più grande della viewport */
+            position: relative;
+        }
+
+        /* Contenitore principale del layout */
+        .main-content {
+            display: flex;
+            flex-direction: column; /* Mobile-first: elementi impilati verticalmente */
+            align-items: center;
+            gap: 1.5rem; /* Spazio tra il pianeta e la sezione del player info su mobile (solo se non space-between) */
+            max-width: 90%;
+            width: min(90vw, 400px); /* Larghezza massima per mobile, si adatta ma non oltre 400px */
+            height: auto; /* Altezza adattiva per mobile (cambierà nelle media query) */
+            max-height: calc(100vh - 40px); /* Limita l'altezza su mobile per prevenire scroll (100vh - padding body) */
+            padding: 0;
+            margin-top: 0; /* Assicura che non ci sia un margin-top indesiderato da mobile */
+        }
+
+        /* Area di visualizzazione del pianeta */
+        .planet-display-area {
+            display: flex; /* Per centrare l'immagine del pianeta all'interno di quest'area */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Stili per il contenitore dell'immagine del pianeta */
+        .planet-image-container {
+            position: relative;
+            width: min(80vw, 350px); /* Dimensione base per mobile/desktop piccoli */
+            height: min(80vw, 350px);
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s ease-out;
+            animation: rotate360 20s linear infinite;
+            /* La GIF ruota sempre, quindi impostiamo lo stato a 'running' */
+            animation-play-state: running; 
+            background: radial-gradient(circle at center, #00008B 0%, #00005C 100%);
+        }
+
+        /* Stili del cerchio nero centrale (foro del CD) */
+        .cd-hole {
+            width: 25px;
+            height: 25px;
+            background-color: black;
+            border-radius: 50%;
+            display: flex; /* Permette al link di occupare lo spazio */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Stili per il link del cerchio centrale */
+        .cd-hole-link {
+            position: absolute;
+            width: 25px; /* Deve avere la stessa dimensione del cd-hole */
+            height: 25px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            display: block; /* Assicura che il link sia un blocco e occupi lo spazio */
+            text-decoration: none; /* Rimuove la sottolineatura di default del link */
+            color: inherit; /* Mantiene il colore del testo genitore */
+            cursor: pointer; /* Indica che è cliccabile */
+        }
+
+        /* Nuovo stile per il cerchio con bordo */
+        .cd-ring {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: none;
+            border: 2px solid black;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
+        }
+
+        /* Stili dell'immagine del pianeta (ora GIF) */
+        #planetImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Animazione di rotazione per l'immagine del pianeta */
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Nuovo wrapper per i controlli del player e il testo della traccia */
+        .player-controls-and-info {
+            display: flex;
+            flex-direction: column; /* Controlli e testo impilati verticalmente */
+            align-items: center; /* Centra gli elementi all'interno di questa colonna */
+            gap: 1.5rem; /* Spazio tra controls-wrapper e track-info-text */
+        }
+
+        /* Contenitore per i bottoni di controllo */
+        .controls-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem; /* Spazio tra i bottoni */
+            margin-top: 0; /* Rimuove margin-top specifici, gestito dal genitore */
+        }
+
+        /* Stile base per tutti i bottoni del player */
+        button {
+            all: unset;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.1s ease-out, background-color 0.2s ease, border-color 0.2s ease;
+            position: relative;
+        }
+
+        /* Rimuovi l'effetto ripple per mantenere il minimalismo */
+        button:active::before {
+            content: none;
+        }
+
+        /* Stili del bottone Play/Pausa */
+        .play-pause-button {
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            border: 1px solid white; 
+            background: none; 
+            box-shadow: none; 
+        }
+
+        .play-pause-button:hover {
+            transform: scale(1.05); 
+            background-color: rgba(255, 255, 255, 0.1); 
+            box-shadow: none; 
+        }
+
+        .play-pause-button svg {
+            width: 40px; 
+            height: 40px; 
+            fill: white; 
+        }
+
+        .play-pause-button:disabled {
+            opacity: 0.4; 
+            cursor: not-allowed;
+            border-color: gray;
+            background: none;
+            box-shadow: none;
+        }
+
+        .play-pause-button:disabled svg {
+            fill: gray;
+        }
+
+        /* Stili dei bottoni di navigazione (Precedente/Successivo) e Shuffle/Loop */
+        .nav-button,
+        .shuffle-button,
+        .loop-button {
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            color: white; 
+            font-size: 1.8rem; 
+            background: none; 
+            box-shadow: none; 
+            border: 1px solid transparent;
+        }
+
+        /* Hover states for desktop */
+        .nav-button:hover,
+        .shuffle-button:hover,
+        .loop-button:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-shadow: none; 
+            border-color: white;
+        }
+
+        /* Stili specifici per il pallino di attivazione (shuffle e loop) */
+        .shuffle-button.active::after,
+        .loop-button.active::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            bottom: -5px; /* Posiziona il pallino 5px sotto il bordo inferiore del bottone */
+            top: auto; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            display: block;
+        }
+
+        /* Nascondi il pallino quando il bottone non è attivo */
+        .shuffle-button:not(.active)::after,
+        .loop-button:not(.active)::after {
+            display: none;
+        }
+
+        /* Stili specifici per il pulsante Shuffle attivo (no border, no background) */
+        .shuffle-button.active {
+            border: 1px solid transparent;
+            background-color: transparent;
+        }
+        /* Stili specifici per il pulsante Loop attivo (no border, no background) */
+        .loop-button.active {
+            border: 1px solid transparent;
+            background-color: transparent;
+        }
+
+        /* Stili per il testo "traccia_00N" */
+        .track-info-text {
+            font-size: 1.2rem;
+            text-transform: lowercase;
+            color: white;
+            margin-top: 0; /* Gestito dal gap di .player-controls-and-info */
+            margin-bottom: 0;
+            letter-spacing: 0.05em;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        /* --- DESKTOP STYLES (min-width: 769px) --- */
+        @media (min-width: 769px) {
+            body {
+                justify-content: center; /* Mantiene il centraggio verticale per il body su desktop */
+                flex-direction: column;
+                padding: 20px; /* Ripristina il padding per desktop */
+            }
+
+            .main-content {
+                flex-direction: row; /* Layout orizzontale per desktop */
+                justify-content: center;
+                align-items: center;
+                gap: 5rem;
+                max-width: 1200px;
+                width: 95vw;
+                height: 80vh; /* Altezza fissa per lasciare spazio sopra/sotto */
+                max-height: 80vh; /* Assicura che non superi l'80% dell'altezza della viewport */
+                padding: 0;
+                margin-top: 0; /* Assicura che non ci sia un margin-top indesiderato da mobile */
+            }
+
+            .planet-image-container {
+                width: min(550px, 80vh); /* Si adatta all'altezza della viewport ma max 550px */
+                height: min(550px, 80vh); /* Si adatta all'altezza della viewport ma max 550px */
+            }
+
+            .player-controls-and-info {
+                align-items: flex-start;
+                gap: 1.5rem;
+                margin-top: 0; /* Reset margin-top per desktop */
+            }
+            
+            /* Assicura che i margini specifici mobile siano azzerati su desktop se non desiderati */
+            .controls-wrapper,
+            .track-info-text {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
+            /* Ripristina gli stati hover per desktop, in caso fossero stati forzati a transparent da mobile */
+            .nav-button:hover,
+            .shuffle-button:hover,
+            .loop-button:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-color: white;
+                transform: scale(1.1);
+            }
+            .play-pause-button:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-color: white;
+                transform: scale(1.05);
+            }
+        }
+
+        /* --- MOBILE MEDIA QUERIES (per garantire la responsività e no scroll) --- */
+
+        /* Media queries per la responsività su schermi medi (es. tablet in verticale) */
+        @media (max-width: 768px) {
+            body {
+                justify-content: flex-start; /* Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* Rimuovi padding dal body per gestione interna */
+            }
+            .main-content {
+                width: min(90vw, 475px);
+                height: 100vh; /* Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* Previene lo scrolling verticale */
+                gap: 0; /* Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* Pianeta a 12% dal top */
+                padding-bottom: 20vh; /* Player a 20% dal bottom */
+                justify-content: space-between; /* Spingi elementi ai bordi del main-content */
+                box-sizing: border-box; /* Assicura che padding sia incluso nell'altezza */
+            }
+
+            .planet-image-container {
+                /* Calcola dimensione massima in base allo spazio verticale disponibile (100vh - 12vh - 20vh = 68vh) */
+                width: min(90vw, 475px, calc(68vh * 0.8)); /* Larghezza: 90% della vw, max 475px, max 80% dello spazio verticale rimanente */
+                height: min(90vw, 475px, calc(68vh * 0.8)); /* Altezza: 90% della vw, max 475px, max 80% dello spazio verticale rimanente */
+            }
+
+            .player-controls-and-info {
+                margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
+                gap: 1rem;
+                max-height: calc(68vh * 0.2); /* Limita altezza a 20% dello spazio disponibile */
+            }
+
+            /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
+
+            /* Rimuove gli effetti hover/active su tutti i bottoni sui dispositivi touch tranne play/pausa */
+            button:hover:not(.play-pause-button),
+            button:active:not(.play-pause-button) { 
+                transform: scale(1) !important;
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-color: transparent !important;
+            }
+
+            /* Assicura che play-pause abbia i suoi stati hover/active */
+            .play-pause-button:hover { 
+                border-color: white; 
+                background-color: rgba(255, 255, 255, 0.1); 
+                transform: scale(1.05); 
+            }
+            .play-pause-button:active { 
+                background-color: rgba(255, 255, 255, 0.2) !important; 
+                border-color: white !important; 
+                transform: scale(1.05);
+            }
+        }
+
+        /* Media queries per la responsività su schermi piccoli (es. smartphone) */
+        @media (max-width: 480px) {
+            body {
+                justify-content: flex-start; /* Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* Rimuovi padding dal body per gestione interna */
+            }
+            .main-content {
+                width: min(95vw, 400px);
+                height: 100vh; /* Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* Previene lo scrolling verticale */
+                gap: 0; /* Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* Pianeta a 12% dal top */
+                padding-bottom: 20vh; /* Player a 20% dal bottom */
+                justify-content: space-between; /* Spingi elementi ai bordi del main-content */
+                box-sizing: border-box; /* Assicura che padding sia incluso nell'altezza */
+            }
+
+            .planet-image-container {
+                /* Calcola dimensione massima in base allo spazio verticale disponibile (68vh) */
+                width: min(95vw, 400px, calc(68vh * 0.8));
+                height: min(95vw, 400px, calc(68vh * 0.8));
+            }
+            
+            .player-controls-and-info {
+                margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
+                gap: 0.8rem;
+                max-height: calc(68vh * 0.2); /* Limita altezza a 20% dello spazio disponibile */
+            }
+
+            /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
+
+            /* Rimuove gli effetti hover/active su tutti i bottoni sui dispositivi touch tranne play/pausa */
+            button:hover:not(.play-pause-button),
+            button:active:not(.play-pause-button) { 
+                transform: scale(1) !important;
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border-color: transparent !important;
+            }
+
+            /* Assicura che play-pause abbia i suoi stati hover/active */
+            .play-pause-button:hover { 
+                border-color: white; 
+                background-color: rgba(255, 255, 255, 0.1); 
+                transform: scale(1.05); 
+            }
+            .play-pause-button:active { 
+                background-color: rgba(255, 255, 255, 0.2) !important; 
+                border-color: white !important; 
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenitore principale del layout -->
+    <div class="main-content">
+        <!-- Sezione del Pianeta (sinistra su desktop, alto su mobile) -->
+        <div class="planet-display-area">
+            <div class="planet-image-container">
+                <img src="" alt="Animated Planet" id="planetImage">
+                <!-- Aggiunto un link intorno al cerchio nero centrale -->
+                <a href="bonus.html" class="cd-hole-link">
+                    <div class="cd-hole"></div>
+                </a>
+                <div class="cd-ring"></div>
+            </div>
+        </div>
+
+        <!-- Sezione Controlli Player e Info Traccia (destra su desktop, basso su mobile) -->
+        <div class="player-controls-and-info">
+            <div class="controls-wrapper">
+                <!-- I pulsanti shuffle, precedente e successivo sono disabilitati per una singola traccia -->
+                <button id="randomBtn" class="shuffle-button" disabled style="opacity: 0.4; cursor: not-allowed;">
+                    <span class="material-symbols-outlined">shuffle</span>
+                </button>
+                <button id="prevBtn" class="nav-button" disabled style="opacity: 0.4; cursor: not-allowed;">
+                    <span class="material-symbols-outlined">skip_previous</span>
+                </button>
+                <button id="toggleBtn" class="play-pause-button">
+                    <svg id="icon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button id="nextBtn" class="nav-button" disabled style="opacity: 0.4; cursor: not-allowed;">
+                    <span class="material-symbols-outlined">skip_next</span>
+                </button>
+                <button id="loopBtn" class="loop-button">
+                    <span class="material-symbols-outlined">loop</span>
+                </button>
+            </div>
+            <p id="trackNumberDisplay" class="track-info-text"></p>
+        </div>
+    </div>
+
+    <!-- Elemento audio HTML5 (posizionato fuori dal layout visivo principale) -->
+    <audio id="myAudio">
+        Il tuo browser non supporta l'audio.
+    </audio>
+
+    <script>
+        // References to DOM elements
+        const audio = document.getElementById('myAudio');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const prevBtn = document.getElementById('prevBtn'); // Sarà disabilitato
+        const nextBtn = document.getElementById('nextBtn'); // Sarà disabilitato
+        const icon = document.getElementById('icon');
+        const trackNumberDisplay = document.getElementById('trackNumberDisplay');
+        const planetImageContainer = document.querySelector('.planet-image-container');
+        const planetImage = document.getElementById('planetImage');
+        const randomBtn = document.getElementById('randomBtn'); // Sarà disabilitato
+        const loopBtn = document.getElementById('loopBtn');
+
+        // Array di tracce audio (una sola per bonus.html)
+        const tracks = [
+            { title: 'traccia_bonus', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', planetImage: 'https://media.giphy.com/media/l0Hlwiq5aN4633gFG/giphy.gif' } // Sostituire con una GIF di pianeta reale se disponibile
+        ];
+
+        let currentTrackIndex = 0;
+        let isRandomMode = false; // Non usato per una singola traccia, ma mantenuto per coerenza
+
+        // Icone SVG per gli stati Play e Pause
+        const playIcon = `<path d="M8 5v14l11-7z"/>`;
+        const pauseIcon = `<path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/>`;
+
+        /**
+         * Carica una traccia audio specificata dall'indice nell'array `tracks`.
+         * Aggiorna il testo della traccia e l'immagine del pianeta.
+         * La rotazione del pianeta è gestita solo dal CSS e non viene interrotta.
+         * @param {number} index L'indice della traccia da caricare (sempre 0 in questo caso).
+         * @param {boolean} shouldPlayAfterLoad Se true, la traccia verrà riprodotta automaticamente dopo il caricamento.
+         */
+        function loadTrack(index, shouldPlayAfterLoad = false) {
+            if (!audio.paused) {
+                audio.pause();
+            }
+            icon.innerHTML = playIcon;
+            // planetImageContainer.style.animationPlayState non viene più modificato qui, resta sempre 'running'
+
+            currentTrackIndex = index;
+            audio.src = tracks[currentTrackIndex].src;
+            planetImage.src = tracks[currentTrackIndex].planetImage;
+
+            console.log("Attempting to load audio from:", audio.src);
+            console.log("Attempting to load image from:", planetImage.src);
+
+            trackNumberDisplay.textContent = tracks[currentTrackIndex].title; // Visualizza il titolo "traccia_bonus"
+            audio.load();
+
+            audio.onerror = (e) => {
+                console.error("Audio loading error for track:", tracks[currentTrackIndex].title, e);
+                trackNumberDisplay.textContent = `Error: "${tracks[currentTrackIndex].title}" not found or not supported.`;
+                toggleBtn.disabled = true;
+                icon.innerHTML = playIcon;
+            };
+
+            audio.onloadedmetadata = () => {
+                toggleBtn.disabled = false;
+            };
+
+            if (shouldPlayAfterLoad) {
+                audio.play()
+                    .then(() => {
+                        icon.innerHTML = pauseIcon;
+                        // planetImageContainer.style.animationPlayState non viene più modificato qui
+                    })
+                    .catch(error => {
+                        console.error("Error starting playback (might be due to browser policy or source):", error);
+                        icon.innerHTML = playIcon;
+                        // planetImageContainer.style.animationPlayState non viene più modificato qui
+                    });
+            }
+        }
+
+        // Event listener per il bottone Play/Pausa
+        toggleBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        icon.innerHTML = pauseIcon;
+                        // planetImageContainer.style.animationPlayState non viene più modificato qui
+                    })
+                    .catch(error => {
+                        console.error("Error during playback start:", error);
+                        icon.innerHTML = playIcon;
+                        // planetImageContainer.style.animationPlayState non viene più modificato qui
+                    });
+            } else {
+                audio.pause();
+                icon.innerHTML = playIcon;
+                // planetImageContainer.style.animationPlayState non viene più modificato qui
+            }
+        });
+
+        // I pulsanti Precedente, Successivo e Shuffle sono disabilitati e non hanno listener attivi in questa versione bonus.
+        // I loro stili di opacità e cursore sono impostati direttamente nell'HTML.
+
+        // Event listener: quando una traccia finisce (qui solo la singola traccia)
+        audio.addEventListener('ended', () => {
+            // Se il loop audio non è attivo, ricarica la traccia per ripartire
+            if (!audio.loop) {
+                loadTrack(0, true); // Ricarica la stessa traccia e riprodurla
+            }
+        });
+
+        // Event listener per il pulsante 'Loop'
+        loopBtn.addEventListener('click', () => {
+            audio.loop = !audio.loop;
+            loopBtn.classList.toggle('active', audio.loop);
+        });
+
+        // Inizializza il player con la singola traccia bonus al caricamento della pagina
+        document.addEventListener('DOMContentLoaded', () => {
+            audio.loop = false; // Assicurati che il loop audio sia disattivato all'inizio
+            loopBtn.classList.remove('active'); // Rimuovi la classe 'active' dal pulsante loop
+
+            loadTrack(0, false); // Carica la prima (e unica) traccia
+
+            // Assicura che l'animazione del pianeta sia sempre attiva
+            planetImageContainer.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>
