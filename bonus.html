@@ -76,6 +76,7 @@
             animation: rotate360 20s linear infinite; /* Animazione di rotazione continua */
             animation-play-state: running; /* Assicura che l'animazione sia sempre attiva */
             background: radial-gradient(circle at center, #00008B 0%, #00005C 100%); /* Sfondo di fallback */
+            will-change: transform; /* SUGGERIMENTO: Aggiunto per migliorare la fluidità dell'animazione */
         }
 
         /* Stili del cerchio nero centrale (foro del CD) */
@@ -390,7 +391,7 @@
             <div class="planet-image-container">
                 <!-- Sostituisco l'img con un video -->
                 <video autoplay loop muted playsinline id="planetVideo">
-                    <source src="assets/images/plnt-013.mp4" type="video/mp4">
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-nebula-with-stars-1100-large.mp4" type="video/mp4">
                     Il tuo browser non supporta il tag video.
                 </video>
                 <!-- Aggiunto un link intorno al cerchio nero centrale -->
@@ -419,7 +420,8 @@
                 <button id="nextBtn" class="nav-button" disabled>
                     <span class="material-symbols-outlined">skip_next</span>
                 </button>
-                <button id="loopBtn" class="loop-button">
+                <!-- Il pulsante loop è disabilitato in quanto la traccia audio si ripeterà all'infinito -->
+                <button id="loopBtn" class="loop-button" disabled style="opacity: 0.4; cursor: not-allowed;">
                     <span class="material-symbols-outlined">loop</span>
                 </button>
             </div>
@@ -438,12 +440,12 @@
         const toggleBtn = document.getElementById('toggleBtn');
         const icon = document.getElementById('icon');
         const trackNumberDisplay = document.getElementById('trackNumberDisplay');
-        const loopBtn = document.getElementById('loopBtn');
+        const loopBtn = document.getElementById('loopBtn'); // Mantenuto il riferimento, ma il pulsante è disabilitato
         const planetVideo = document.getElementById('planetVideo'); // Riferimento al nuovo elemento video
 
         // Array di tracce audio (una sola per bonus.html)
         const tracks = [
-            { title: 'traccia_013', src: 'assets/audio/tr-013.mp3' } 
+            { title: 'traccia_013', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' } 
         ];
 
         let currentTrackIndex = 0; // Rimane 0, unica traccia
@@ -516,22 +518,19 @@
 
         // Event listener: quando una traccia finisce
         audio.addEventListener('ended', () => {
-            // Se il loop audio non è attivo, ricarica la traccia per ripartire
+            // Poiché l'audio è sempre in loop, questa parte non sarà mai eseguita se audio.loop è true.
+            // Tuttavia, se per qualche motivo il loop dovesse essere disattivato esternamente (es. da dev tools),
+            // la traccia si ricaricherebbe e ripartirebbe.
             if (!audio.loop) {
                 loadTrack(0, true); // Ricarica la stessa traccia e riprodurla
             }
         });
 
-        // Event listener per il pulsante 'Loop'
-        loopBtn.addEventListener('click', () => {
-            audio.loop = !audio.loop;
-            loopBtn.classList.toggle('active', audio.loop);
-        });
-
         // Inizializza il player con la singola traccia bonus al caricamento della pagina
         document.addEventListener('DOMContentLoaded', () => {
-            audio.loop = false; // Assicurati che il loop audio sia disattivato all'inizio
-            loopBtn.classList.remove('active'); // Rimuovi la classe 'active' dal pulsante loop
+            audio.loop = true; // Imposta il loop audio su true per sempre
+            loopBtn.classList.remove('active'); // Assicurati che l'indicatore visuale non sia attivo
+            // Il pulsante loop è ora disabilitato nell'HTML, quindi non ha bisogno di un listener.
 
             loadTrack(0, false); // Carica la prima (e unica) traccia
         });
