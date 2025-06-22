@@ -73,10 +73,12 @@
             justify-content: center;
             align-items: center;
             transition: transform 0.1s ease-out;
+            /* L'animazione rotate360 verrà combinata con translateZ(0) */
             animation: rotate360 20s linear infinite; /* Animazione di rotazione continua */
             animation-play-state: running; /* Assicura che l'animazione sia sempre attiva */
             background: radial-gradient(circle at center, #00008B 0%, #00005C 100%); /* Sfondo di fallback */
             will-change: transform; /* SUGGERIMENTO: Aggiunto per migliorare la fluidità dell'animazione */
+            transform: translateZ(0); /* Aggiunto per forzare l'accelerazione hardware */
         }
 
         /* Stili del cerchio nero centrale (foro del CD) */
@@ -121,7 +123,7 @@
         }
 
         /* Stili del video all'interno del contenitore del pianeta */
-        #planetVideo { /* Modificato da #planetImage a #planetVideo */
+        #planetVideo { 
             width: 100%;
             height: 100%;
             object-fit: cover; /* Assicura che il video riempia il cerchio mantenendo le proporzioni */
@@ -130,8 +132,8 @@
 
         /* Animazione di rotazione per il contenitore del video */
         @keyframes rotate360 {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from { transform: rotate(0deg) translateZ(0); } /* Applica translateZ(0) anche all'animazione */
+            to { transform: rotate(360deg) translateZ(0); } /* Applica translateZ(0) anche all'animazione */
         }
         
         /* Nuovo wrapper per i controlli del player e il testo della traccia */
