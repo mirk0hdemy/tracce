@@ -23,57 +23,116 @@
             color: white; /* Colore del testo bianco */
             font-family: 'Orbit', sans-serif; /* Utilizzo del font Orbit */
             display: flex;
-            flex-direction: column; /* Sempre in colonna per il centraggio */
+            flex-direction: column; /* Sempre in colonna per il centraggio generale */
             justify-content: center; /* Centra verticalmente il contenuto */
             align-items: center; /* Centra orizzontalmente il contenuto */
             height: 100vh; /* Il body occupa l'intera altezza della viewport */
             margin: 0;
-            padding: 0; /* Rimuovi padding dal body, gestito all'interno di main-content */
+            padding: 20px; /* Padding generale per evitare che il contenuto tocchi i bordi su schermi piccoli */
             touch-action: manipulation; /* Migliora la reattività al tocco su touchscreens */
             overflow: hidden; /* Previene scrollbar indesiderate */
-            position: relative; /* Base per posizionamento assoluto del background-gif */
+            position: relative;
         }
 
-        /* Nuovo elemento per la GIF di sfondo a tutto schermo con rotazione */
-        .background-gif {
-            position: fixed; /* Rende il background fisso rispetto alla viewport */
-            top: 0;
-            left: 0;
-            width: 100vw; /* Copre l'intera larghezza della viewport */
-            height: 100vh; /* Copre l'intera altezza della viewport */
-            background-image: url('https://media.giphy.com/media/l0Hlwiq5aN4633gFG/giphy.gif'); /* La GIF di sfondo */
-            background-size: cover; /* Assicura che la GIF copra interamente l'area */
-            background-position: center; /* Centra la GIF */
-            background-repeat: no-repeat; /* Non ripetere la GIF */
-            z-index: -1; /* Invia la GIF dietro gli altri contenuti */
-            /* animation: rotate360 120s linear infinite; */ /* Rimosso l'animazione di rotazione */
+        /* Il video di sfondo a schermo intero non è più necessario */
+        #background-video {
+            display: none; /* Nasconde il video di sfondo a schermo intero */
         }
 
-        /* Contenitore principale del layout, ora solo per il player e sempre centrato */
+        /* Contenitore principale del layout */
         .main-content {
             display: flex;
             flex-direction: column; /* Contenuto impilato verticalmente */
-            align-items: center; /* Centra orizzontalmente gli elementi */
-            justify-content: center; /* Centra verticalmente gli elementi */
+            align-items: center;
+            justify-content: center; /* Centra il contenuto principale */
             gap: 1.5rem; /* Spazio tra gli elementi */
-            width: 100%; /* Occupa tutta la larghezza disponibile */
-            height: 100%; /* Occupa tutta l'altezza disponibile */
-            max-width: none; /* Rimuove la larghezza massima predefinita */
-            max-height: none; /* Rimuove l'altezza massima predefinita */
-            padding: 20px; /* Padding interno per il contenuto */
-            z-index: 1; /* Assicura che sia sopra la GIF di sfondo */
+            max-width: 90%;
+            width: min(90vw, 400px); /* Larghezza massima per mobile/desktop piccoli */
+            height: auto;
+            max-height: calc(100vh - 40px);
+            padding: 0;
+            margin-top: 0;
+            z-index: 1; /* Assicura che sia sopra eventuali sfondi */
         }
 
-        /* Nasconde gli elementi relativi al vecchio "pianeta" che non servono più */
-        .planet-display-area,
-        .planet-image-container,
-        .cd-hole,
-        .cd-hole-link,
-        .cd-ring,
-        #planetImage {
-            display: none;
+        /* Area di visualizzazione del "pianeta" (ora il video nel cerchio) */
+        .planet-display-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Stili per il contenitore del video (ex immagine del pianeta) */
+        .planet-image-container {
+            position: relative;
+            width: min(80vw, 350px); /* Dimensione base per mobile/desktop piccoli */
+            height: min(80vw, 350px);
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s ease-out;
+            animation: rotate360 20s linear infinite; /* Animazione di rotazione continua */
+            animation-play-state: running; /* Assicura che l'animazione sia sempre attiva */
+            background: radial-gradient(circle at center, #00008B 0%, #00005C 100%); /* Sfondo di fallback */
+        }
+
+        /* Stili del cerchio nero centrale (foro del CD) */
+        .cd-hole {
+            width: 25px;
+            height: 25px;
+            background-color: black;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Stili per il link del cerchio centrale */
+        .cd-hole-link {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        /* Stile per il cerchio con bordo */
+        .cd-ring {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: none;
+            border: 2px solid black;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11; /* Assicura che sia sopra il video e il cd-hole */
+        }
+
+        /* Stili del video all'interno del contenitore del pianeta */
+        #planetVideo { /* Modificato da #planetImage a #planetVideo */
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Assicura che il video riempia il cerchio mantenendo le proporzioni */
+            display: block;
+        }
+
+        /* Animazione di rotazione per il contenitore del video */
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         /* Nuovo wrapper per i controlli del player e il testo della traccia */
         .player-controls-and-info {
             display: flex;
@@ -112,8 +171,8 @@
             width: 80px; 
             height: 80px; 
             border-radius: 50%; 
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Bordo semi-trasparente, opacità ulteriormente ridotta */
-            background-color: rgba(255, 255, 255, 0.02); /* Sfondo semi-trasparente, opacità ulteriormente ridotta */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Bordo semi-trasparente, opacità ridotta */
+            background-color: rgba(255, 255, 255, 0.02); /* Sfondo semi-trasparente, opacità ridotta */
             backdrop-filter: blur(5px); /* Effetto frosted glass */
             box-shadow: none; 
         }
@@ -154,8 +213,8 @@
             border-radius: 50%; 
             color: white; 
             font-size: 1.8rem; 
-            background-color: rgba(255, 255, 255, 0.02); /* Sfondo semi-trasparente, opacità ulteriormente ridotta */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Bordo semi-trasparente, opacità ulteriormente ridotta */
+            background-color: rgba(255, 255, 255, 0.02); /* Sfondo semi-trasparente, opacità ridotta */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Bordo semi-trasparente, opacità ridotta */
             backdrop-filter: blur(5px); /* Effetto frosted glass */
             box-shadow: none; 
         }
@@ -216,14 +275,38 @@
             text-align: center;
         }
 
-        /* Animazione di rotazione per la GIF di sfondo (definita ma non usata per la GIF stessa) */
-        @keyframes rotate360 {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Media queries per la responsività sui dispositivi touch (rimuove effetti hover/active indesiderati) */
+        /* Media queries per la responsività sui dispositivi mobili (orientamento verticale) */
         @media (max-width: 768px) {
+            body {
+                justify-content: flex-start; /* Allinea il contenuto in alto per posizionamento preciso */
+                padding: 0; /* Rimuovi padding dal body per gestione interna */
+            }
+            .main-content {
+                width: min(90vw, 475px);
+                height: 100vh; /* Occupo tutta l'altezza per distribuire elementi */
+                max-height: 100vh; /* Previene lo scrolling verticale */
+                gap: 0; /* Rimuovi il gap qui per lasciare space-between fare il suo lavoro */
+                padding-top: 12vh; /* Video a 12% dal top */
+                padding-bottom: 20vh; /* Player a 20% dal bottom */
+                justify-content: space-between; /* Spingi elementi ai bordi del main-content */
+                box-sizing: border-box; /* Assicura che padding sia incluso nell'altezza */
+            }
+
+            .planet-image-container {
+                /* Calcola dimensione massima in base allo spazio verticale disponibile */
+                width: min(90vw, 475px, calc(68vh * 0.8)); 
+                height: min(90vw, 475px, calc(68vh * 0.8)); 
+            }
+
+            .player-controls-and-info {
+                margin-top: 0; /* Rimuovi eventuali margini che potrebbero interferire */
+                gap: 1rem;
+                max-height: calc(68vh * 0.2); /* Limita altezza a 20% dello spazio disponibile */
+            }
+
+            /* --- STILI SPECIFICI MOBILE: NESSUNO SFONDO/BORDO PER HOVER/ACTIVE TRANNE PLAY/PAUSA --- */
+
+            /* Rimuove gli effetti hover/active su tutti i bottoni sui dispositivi touch tranne play/pausa */
             button:hover:not(.play-pause-button):not([disabled]),
             button:active:not(.play-pause-button):not([disabled]) { 
                 transform: scale(1) !important;
@@ -243,16 +326,82 @@
                 transform: scale(1.05);
             }
         }
+
+        @media (min-width: 769px) {
+            body {
+                justify-content: center; /* Mantiene il centraggio verticale per il body su desktop */
+                flex-direction: column;
+                padding: 20px; /* Ripristina il padding per desktop */
+            }
+
+            .main-content {
+                flex-direction: row; /* Layout orizzontale per desktop */
+                justify-content: center;
+                align-items: center;
+                gap: 5rem;
+                max-width: 1200px;
+                width: 95vw;
+                height: 80vh; /* Altezza fissa per lasciare spazio sopra/sotto */
+                max-height: 80vh; /* Assicura che non superi l'80% dell'altezza della viewport */
+                padding: 0;
+                margin-top: 0; /* Assicura che non ci sia un margin-top indesiderato da mobile */
+            }
+
+            .planet-image-container {
+                width: min(550px, 80vh); /* Si adatta all'altezza della viewport ma max 550px */
+                height: min(550px, 80vh); /* Si adatta all'altezza della viewport ma max 550px */
+            }
+
+            .player-controls-and-info {
+                align-items: flex-start;
+                gap: 1.5rem;
+                margin-top: 0; /* Reset margin-top per desktop */
+            }
+            
+            /* Assicura che i margini specifici mobile siano azzerati su desktop se non desiderati */
+            .controls-wrapper,
+            .track-info-text {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
+            /* Ripristina gli stati hover per desktop, in caso fossero stati forzati a transparent da mobile */
+            .nav-button:hover,
+            .shuffle-button:hover,
+            .loop-button:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-color: white;
+                transform: scale(1.1);
+            }
+            .play-pause-button:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-color: white;
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Nuovo elemento per la GIF di sfondo -->
-    <div class="background-gif"></div>
-
-    <!-- Contenitore principale del layout, ora solo per il player e centrato -->
+    <!-- Contenitore principale del layout -->
     <div class="main-content">
-        <!-- Sezione Controlli Player e Info Traccia (centrata) -->
+        <!-- Sezione del Pianeta (sinistra su desktop, alto su mobile) -->
+        <div class="planet-display-area">
+            <div class="planet-image-container">
+                <!-- Sostituisco l'img con un video -->
+                <video autoplay loop muted playsinline id="planetVideo">
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-nebula-with-stars-1100-large.mp4" type="video/mp4">
+                    Il tuo browser non supporta il tag video.
+                </video>
+                <!-- Aggiunto un link intorno al cerchio nero centrale -->
+                <a href="bonus.html" class="cd-hole-link">
+                    <div class="cd-hole"></div>
+                </a>
+                <div class="cd-ring"></div>
+            </div>
+        </div>
+
+        <!-- Sezione Controlli Player e Info Traccia (destra su desktop, basso su mobile) -->
         <div class="player-controls-and-info">
             <div class="controls-wrapper">
                 <!-- I pulsanti shuffle, precedente e successivo sono disabilitati per una singola traccia -->
@@ -290,6 +439,7 @@
         const icon = document.getElementById('icon');
         const trackNumberDisplay = document.getElementById('trackNumberDisplay');
         const loopBtn = document.getElementById('loopBtn');
+        const planetVideo = document.getElementById('planetVideo'); // Riferimento al nuovo elemento video
 
         // Array di tracce audio (una sola per bonus.html)
         const tracks = [
@@ -305,7 +455,7 @@
         /**
          * Carica una traccia audio specificata dall'indice nell'array `tracks`.
          * Aggiorna il testo della traccia.
-         * La rotazione del background è gestita solo dal CSS e non viene interrotta dal JS.
+         * La rotazione del video è gestita solo dal CSS e non viene interrotta dal JS.
          * @param {number} index L'indice della traccia da caricare (sempre 0 in questo caso).
          * @param {boolean} shouldPlayAfterLoad Se true, la traccia verrà riprodotta automaticamente dopo il caricamento.
          */
@@ -314,11 +464,10 @@
                 audio.pause();
             }
             icon.innerHTML = playIcon;
-            // planetImageContainer e la sua animazione non sono più gestite qui, rimosse.
-
+            
             currentTrackIndex = index;
             audio.src = tracks[currentTrackIndex].src;
-            // planetImage non è più presente, rimosso il riferimento.
+            // Non c'è più un'immagine del pianeta da impostare
 
             console.log("Tentativo di caricare audio da:", audio.src);
 
